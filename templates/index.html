@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<a href="/templates/date.html">{{ name}}你好</a>
+<ul>
+    {% for book in books %}
+    <li>{{ book.name }}</li>
+    {% endfor %}
+</ul>
+<ul>
+    {% for day in week %}
+    <li>{{ day }}</li>
+    {% endfor %}
+
+</ul>
+</body>
+</html>
