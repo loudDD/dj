@@ -59,3 +59,8 @@ model:
 		<li>{{book.name}}</li>
 		{#endfor %}
 	</ul>
+# 文件
+## 静态文件
+### STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICFILES_DIRS中的路径
+### 一般静态文件放在根目录的static文件夹中
