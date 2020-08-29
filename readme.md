@@ -2,7 +2,7 @@ pycharm导入db需要下载插件
 django-admin startproject xx
 python manage.py startapp xx
 python manage.py shell 类似ipython，直接显示结果
-MVT：
+# MVT：
 	model:连接数据库，使用面向的对象的方式，来处理
 	view: 视图（控制器），接收请求，处理数据，返回响应
 	template:html，css,js等html模板文件	 ，视图返回请求前，通过出入处理后的数据到template文件渲染后，进行响应
@@ -62,6 +62,103 @@ MVT：
 		1.CASCADE 删除主表的时候，从表数据也删掉
 		2.PROTECT 无法删除主表字段时
 		3.SET_NULL 主表字段删除后，不影响从表，从表相关字段变为null
+## 处理使用数据
+	1. 在view中导入 from book.models import BookInfo
+	2.books = BookInfo.objects.all()
+	3. context = {'books':books}
+	4.return render(request,'index.html,context)
+	html中传入数据,通过{{key.字段名}}访问，如果重写了__str__，也可以直接用{{key}}，返回的是__str__中的返回值
+	<ul>
+		{%for book in books%}
+		<li>{{book.name}}</li>
+		{#endfor %}
+	</ul>
+## 插入数据
+### 方式1
+```
+#返回新生成的对象，需手动调用save
+book=BookInfo(
+	name ='',
+	xx=xx,
+)
+book.save()
+```
+### 方式2
+直接入库
+```
+# 通过objects可以直接进行所有增删改查操作,返回新生成的对象，无需调用save
+BookInfo.objects.create(
+	name = '',
+	xx= '',
+)
+```
+## 查询数据
+```
+'''
+get 返回一条数据的对象
+all 返回所有数据,类似列表
+count 返回数量
+BookInfo.objects.count()
+BookInfo.objects.all().count()
+'''
+book = BookInfo.objects.get(id=1)
+#得到某条数据
+book.属性名 
+#得到字段值
+```
+### where
+语法格式  关键字（属性名__条件=值）
+#### 条件
+```
+会自动补齐
+exact  等于
+contains 包含
+isnull 为空 =True/False
+in   在...中
+gt  大于 
+gte 大于等于
+```
+1.filter 过滤
+```
+BookInfo.objects.get(id__exact=1)
+BookInfo.objects.filter(id__exact=1)
+返回格式不同，filter可以通过列表取值方式取值
+```
+2.exclude 筛选后的结果
+## 修改数据
+### 方式1
+```
+#查询数据的objects.属性名，直接进行赋值;需手动调用save
+book.objects.属性名=xx
+book.save()
+```
+### 方式2
+```
+# 返回受影响的行数
+book = BookInfo.objects.filter(id = 1).update(
+	name = xx,
+)
+```
+## 删除数据
+都不需要手动save,直接生效
+### 方式1
+```
+BookInfo.objects.filter(id=1).delete()
+
+```
+### 方式2
+
+```
+book = BookInfo.objects.get(id=1)
+book.delete()
+```
+## 数据异常捕获
+```
+try:
+	BookInfo.objects.get(id=10)
+except BookInfo.DoesNotExists:
+	pass
+```
 ## 数据库
 修改为mysql
 1.pip install PyMySQL
@@ -86,7 +183,12 @@ DATABSES= {
 4.进行迁移
 
 # setting.py
-	INSTALLED_APPS 中进行app的注册，可使用包名或包.apps.类名
+## INSTALLED_APPS 中进行app的注册，可使用包名或包.apps.类名	
+## 静态文件
+### STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICFILES_DIRS中的路径
+### 一般静态文件放在根目录的static文件夹中
+
 # model数据	
 ## 创建超级用户，管理数据
 	1.地址 ip/admin
@@ -95,19 +197,4 @@ DATABSES= {
 		admin.site.register(book.models.BookInfo)
 	4.修改admin中数据显示
 		重写BookInfo中的__str__
-## view中处理使用数据
-	1. 在view中导入 from book.models import BookInfo
-	2.books = BookInfo.objects.all()
-	3. context = {'books':books}
-	4.return render(request,'index.html,context)
-	html中传入数据,通过{{key.字段名}}访问，如果重写了__str__，也可以直接用{{key}}，返回的是__str__中的返回值
-	<ul>
-		{%for book in books%}
-		<li>{{book.name}}</li>
-		{#endfor %}
-	</ul>
-# 文件
-## 静态文件
-### STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
-STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICFILES_DIRS中的路径
-### 一般静态文件放在根目录的static文件夹中
+
