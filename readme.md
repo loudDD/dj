@@ -62,6 +62,8 @@ python manage.py shell 类似ipython，直接显示结果
 		1.CASCADE 删除主表的时候，从表数据也删掉
 		2.PROTECT 无法删除主表字段时
 		3.SET_NULL 主表字段删除后，不影响从表，从表相关字段变为null
+	13. DateField 传入值格式为datetime
+	    将str转换为datetiem datetime.strptime("2010-01-01" , "%Y-%m-%d")
 ## 处理使用数据
 	1. 在view中导入 from book.models import BookInfo
 	2.books = BookInfo.objects.all()
@@ -93,18 +95,25 @@ BookInfo.objects.create(
 )
 ```
 ## 查询数据
-```
-'''
+
+
 get 返回一条数据的对象
 all 返回所有数据,类似列表
 count 返回数量
 BookInfo.objects.count()
 BookInfo.objects.all().count()
-'''
-book = BookInfo.objects.get(id=1)
-#得到某条数据
-book.属性名 
-#得到字段值
+```
+book = BookInfo.objects.get(id=1) #得到某条数据
+
+book.属性名 #得到字段值
+```
+BookInfo.object.all().filter().values(字段值)#获取某（字段值）列的值
+```
+times = books.filter(pub_date__isnull=False).values("pub_date")
+#返回字典{属性名：值}
+time = [x['pub_date'].strftime('%Y-%m-%d ') for x in times] 
+#返回2010-01-01
+
 ```
 ### where
 语法格式  关键字（属性名__条件=值）
@@ -118,6 +127,7 @@ in   在...中
 gt  大于 
 gte 大于等于
 ```
+
 1.filter 过滤
 ```
 BookInfo.objects.get(id__exact=1)
@@ -139,6 +149,38 @@ book = BookInfo.objects.filter(id = 1).update(
 	name = xx,
 )
 ```
+### 数据表内进行对比 F对象
+进行数据字段间比较
+from django.db.models import F
+filter(字段名__条件=F('字段名'))
+F('字段名')*2 可直接运算
+### 多重条件 
+1.filter().filter() == select x from x where xx and xx
+2.filter(condition1,condition2)
+3.Q对象
+#### Q对象
+```
+from django.db.models import Q
+
+or  Q() | Q()
+and Q() & Q()
+not ~Q()
+filter(Q(id__gt=10) & Q())
+```
+### 聚合函数
+aggregate(聚合函数('字段名'))
+```
+from django.db.models import Sum,Avg,Max,Min,Count
+BookInfo.objects.aggregate(sum('id'))
+```
+### 排序
+默认升序
+```
+BookInfo.objects.all().order_by('readcount')
+#降序 : -字段名
+BookInfo.objects.all().order_by('-readcount')
+```
+
 ## 删除数据
 都不需要手动save,直接生效
 ### 方式1
@@ -165,7 +207,9 @@ except BookInfo.DoesNotExists:
 2.django同名子目录的__init__.py中写入
 ```
 import pymysql
+#pymysql.version_info = (1, 4, 13, "final", 0) django3.1.1需要添加
 pymysql.install_as_MySQLdb()
+
 ```
 3.修改setting.py
 ```

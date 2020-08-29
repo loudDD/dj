@@ -7,15 +7,26 @@
 <body>
 
 <a href="/templates/date.html">{{ name}}你好</a>
+<div>book</div>
 <ul>
     {% for book in books %}
     <li>{{ book.name }}</li>
     {% endfor %}
 </ul>
+<br>
+<div>week</div>
 <ul>
 
     {% for day in week %}
     <li>{{ day }}</li>
+    {% endfor %}
+
+</ul>
+<br>
+<div>pub_date</div>
+<ul>
+    {% for date in pub_date %}
+    <li>{{ date }}</li>
     {% endfor %}
 
 </ul>
