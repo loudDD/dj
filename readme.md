@@ -16,7 +16,7 @@ python manage.py shell 类似ipython，直接显示结果
 	多个app的views需要导入时
 	from xx import views as xxx 进行重命名
 	无法导入相同模块名
-	可有多个urls.py  项目和app都可以有，依次从项目的urls开始匹配，app的urls需要再项目的urls传入
+	可有多个urls.py  项目和app都可以有，依次从项目的urls开始匹配，app的urls需要在项目的urls传入
 
 # views： 
 	控制器， 进行数据处理等，即返回数据
@@ -29,7 +29,7 @@ python manage.py shell 类似ipython，直接显示结果
 ## 数据类型
 	1.连接数据库，默认自带的sqlite
 	2.类 -- 表  属性 -- 字段
-	3.继承models.Model,格式一般为大写开头，Field结尾；内部要求 需了解
+	3.继承models.Model,字段格式一般为大写开头，Field结尾；内部要求 需了解
 		3.1 主键id自动生成 
 		3.2 外键需添加外键对象
 		3.3 属性名就是字段名
@@ -40,8 +40,8 @@ python manage.py shell 类似ipython，直接显示结果
 	```
 	4. python manage.py makemigrations 创建关系 ，可在 migrations文件夹查看，进行操作等
 	5. python manage.py migrate 进行迁移，自动创建表完成
-	6. verbose_name admin后台显示的分栏名	
-	7. models.CharFiled(max_lenght)必须有最大长度
+	6. verbose_name admin后台显示的分栏名（也可直接在字段属性中添加改选项）	
+	7. models.CharFiled(max_length)必须有最大长度
 	8. 可选属性null=True，是否可为为空；unique=False;整形和布尔类型，default=xx；
 	9. 默认生成的表名：app名_model类名(小写) book_bookinfo
 	10.自定义表名，model文件中的表类中中创建内部类
@@ -55,7 +55,7 @@ python manage.py shell 类似ipython，直接显示结果
 	```
 	11. 枚举类型:理论上为有序字典；python字典为无序，所以使用二维元祖
 	```
-	gender_choice = ((0,'male'),(1,'femail'))
+	gender_choice = ((0,'male'),(1,'fema'))
 	gender = models.SmallIntegerField(choices=gender_choice,default=0)
 	```
 	12.外键 ON_DELETE = models.CASCADE
@@ -131,7 +131,7 @@ gte 大于等于
 1.filter 过滤
 ```
 BookInfo.objects.get(id__exact=1)
-BookInfo.objects.filter(id__exact=1)
+BookInfo.objects.filter(id__exact=1)['name']
 返回格式不同，filter可以通过列表取值方式取值
 ```
 2.exclude 筛选后的结果
@@ -237,7 +237,7 @@ STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICF
 ## 创建超级用户，管理数据
 	1.地址 ip/admin
 	2.python manage.py createsuperuser
-	3.需要再项目admin中注册要修改的models
+	3.需要在项目admin中注册要修改的models
 		admin.site.register(book.models.BookInfo)
 	4.修改admin中数据显示
 		重写BookInfo中的__str__
