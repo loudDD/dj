@@ -19,11 +19,17 @@ python manage.py shell 类似ipython，直接显示结果
 	可有多个urls.py  项目和app都可以有，依次从项目的urls开始匹配，app的urls需要在项目的urls传入
 
 # views： 
-	控制器， 进行数据处理等，即返回数据
-	1.传入数据到template中，渲染后，用户通过路径访问
-	2.render(request,"pagename.html,context)
-	3.直接返回内容用HttpResponse("")
-	4 context 字典，可传入参数到html，html使用参数 {{字典key}}
+控制器， 进行数据处理等，即返回数据
+- 传入数据到template中，渲染后，用户通过路径访问
+- render(request,"pagename.html,context)
+```
+相当于 
+page = loader.get_template('pagename.html')
+result = page.render(context)
+return HttpResponse(result)
+```
+- 直接返回内容用HttpResponse("")
+- context 字典，可传入参数到html，html使用参数 {{字典key}}
 
 # model: ORM
 ## 数据类型
@@ -83,6 +89,9 @@ book=BookInfo(
 	name ='',
 	xx=xx,
 )
+book.save()
+book = BookInfo()
+book.name = ''
 book.save()
 ```
 ### 方式2
@@ -167,6 +176,8 @@ and Q() & Q()
 not ~Q()
 filter(Q(id__gt=10) & Q())
 ```
+#### pk
+pk = primary key，用于条件查询 get(pk=1)
 ### 聚合函数
 aggregate(聚合函数('字段名'))
 ```
@@ -241,4 +252,30 @@ STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICF
 		admin.site.register(book.models.BookInfo)
 	4.修改admin中数据显示
 		重写BookInfo中的__str__
+## 多级路由
+- 二级路由内容和一级一样
+- 需要在一级路由注册二级路由
+    - path('re/', include('register.urls'))
 
+# html
+## a标签
+- 必须在同级路由器配置好path('book/', bookview.getdata, name='book'),
+- html中使用：
+```html
+<a href="{% url  'book' %}">book</a>
+book为url中的name
+```
+
+
+# 创建app全流程
+1.django-admin start app xxx
+2.settings.py 注册app
+3.在models 中创建表，继承models.Model 
+python manage.py makemigrations
+python manage.py migrate
+4.. 在template中创建html 使用或写入数据
+5.views创建处理函数
+def xx(request):
+    return render(request,'xx.html',context)
+6.
+7.urls中注册路由，写入view
