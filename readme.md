@@ -41,7 +41,7 @@ return HttpResponse(result)
 		3.3 属性名就是字段名
 	```
 	class people(models.Model):
-		name = models.CharField()
+		name = models.CharField(db_column='数据库列名')
 		
 	```
 	4. python manage.py makemigrations 创建关系 ，可在 migrations文件夹查看，进行操作等
@@ -70,6 +70,8 @@ return HttpResponse(result)
 		3.SET_NULL 主表字段删除后，不影响从表，从表相关字段变为null
 	13. DateField 传入值格式为datetime
 	    将str转换为datetiem datetime.strptime("2010-01-01" , "%Y-%m-%d")
+	    DateField.auto_now = false(默认)
+	    
 ## 处理使用数据
 	1. 在view中导入 from book.models import BookInfo
 	2.books = BookInfo.objects.all()
@@ -105,12 +107,12 @@ BookInfo.objects.create(
 ```
 ## 查询数据
 
+- get 返回一条数据的对象
+- all 返回所有数据,类似列表
+- count 返回数量
+  BookInfo.objects.count()
+  BookInfo.objects.all().count()
 
-get 返回一条数据的对象
-all 返回所有数据,类似列表
-count 返回数量
-BookInfo.objects.count()
-BookInfo.objects.all().count()
 ```
 book = BookInfo.objects.get(id=1) #得到某条数据
 
@@ -240,9 +242,15 @@ DATABSES= {
 # setting.py
 ## INSTALLED_APPS 中进行app的注册，可使用包名或包.apps.类名	
 ## 静态文件
-### STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
+### STATIC_URL 
+STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
+### STATICFILES_DIRS
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICFILES_DIRS中的路径
 ### 一般静态文件放在根目录的static文件夹中
+### 其他参数
+ALLOWED_HOSTS= ["*",] 所有可以访问到的ip都可以访问
+LANGUAGE_CODE = ‘zh-Hans’
+TIME_ZONE ='Asia/Shanghai
 
 # model数据	
 ## 创建超级用户，管理数据
