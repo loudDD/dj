@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="book@59.110.71.12" uuid="d9870e74-6e12-4066-aea5-6e265d53a514">
+    <data-source source="LOCAL" name="Django default" uuid="56f77fc8-6fe3-437b-9758-3e8defa61772">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/bookmanager/settings.py</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://59.110.71.12:3306/book</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="book@59.110.71.12" uuid="c0fa136c-f32e-4b2f-a05a-1cb5089542a1">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://59.110.71.12:3306/book</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="UTC" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

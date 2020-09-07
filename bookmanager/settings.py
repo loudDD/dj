@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'book.apps.BookConfig',
     'login.apps.LoginConfig',
     'pay.apps.PayConfig',
-    'register.apps.RegisterConfig'
+
 ]
 
 MIDDLEWARE = [
@@ -83,6 +83,7 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '59.110.71.12',
+        # 'HOST': 'localhost',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': '123456',

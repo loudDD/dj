@@ -7,4 +7,5 @@ urlpatterns = [
     path('update/', bookview.updateData),
     path('get/', bookview.getData),
     path('book/', bookview.getdata, name='book'),
+    path('getsum/', bookview.getsum)
 ]

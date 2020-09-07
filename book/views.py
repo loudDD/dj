@@ -1,9 +1,7 @@
 from datetime import datetime
 
-from django.http import HttpResponse
 from django.shortcuts import render
-from book.models import BookInfo
-from django.db.models import Q, F, Sum
+from book.models import BookInfo, CustomerInfo
 
 
 # Create your views here.
@@ -14,7 +12,8 @@ def updateData(request):
     context = {
         'books': BookInfo.objects.all()
     }
-    return render(request, 'index.html',context)
+
+    return render(request, 'index.html', context)
 
 
 def addData(request):
@@ -46,7 +45,7 @@ def addData(request):
     context = {
         'books': BookInfo.objects.all()
     }
-    return render(request, 'index.html',context)
+    return render(request, 'index.html', context)
 
 
 def deleteData(request):
@@ -56,7 +55,7 @@ def deleteData(request):
     context = {
         'books': BookInfo.objects.all()
     }
-    return render(request, 'index.html',context)
+    return render(request, 'index.html', context)
 
 
 def getData(request):
@@ -101,3 +100,9 @@ def indexpage(request):
 
 def getdata(request):
     return render(request, 'data.html', {"time": "today"})
+
+
+def getsum(request):
+    customer = CustomerInfo.objects.all()
+    context = dict(customer=customer)
+    return render(request, "customer_info.html", context)

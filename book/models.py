@@ -16,10 +16,17 @@ class BookInfo(models.Model):
         return self.name
 
 
-# class PeopleInfo(models.Model):
-#     name = models.CharField(max_length=10)
-#     gender = models.BooleanField()
-#     book = models.ForeignKey(BookInfo, on_delete=BookInfo)
-#
-#     def __str__(self):
-#         return self.name
+class PeopleInfo(models.Model):
+    name = models.CharField(max_length=10)
+    gender = models.BooleanField()
+    book = models.ForeignKey(BookInfo, on_delete=BookInfo)
+
+    def __str__(self):
+        return self.name
+
+
+class CustomerInfo(models.Model):
+    c_name = models.CharField(max_length=10)
+    choices = ((0, "女"), (1, "男"))
+    c_sex = models.SmallIntegerField(choices)
+    c_cost = models.FloatField(default=10.0)

@@ -18,17 +18,15 @@ from django.urls import path, include
 
 import book
 import pay
-import register
 from book import views as bookview
 from pay import views as payview
-from register import urls,views as registerview
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', bookview.indexpage),
     path('data/', bookview.getdata),
     path('time/', payview.getweek),
     # path('register/', registerview.register),
-    path('re/', include('register.urls')),
     path('book/', include('book.urls')),
+
 
 ]
