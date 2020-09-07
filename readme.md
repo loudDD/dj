@@ -71,7 +71,7 @@ return HttpResponse(result)
 	13. DateField 传入值格式为datetime
 	    将str转换为datetiem datetime.strptime("2010-01-01" , "%Y-%m-%d")
 	    DateField.auto_now = false(默认)
-	    
+
 ## 处理使用数据
 	1. 在view中导入 from book.models import BookInfo
 	2.books = BookInfo.objects.all()
@@ -108,7 +108,7 @@ BookInfo.objects.create(
 ## 查询数据
 
 - get 返回一条数据的对象
-- all 返回所有数据,类似列表
+- all 返回所有数据,类似列表,可以通过列表方式切片查询，不能为负
 - count 返回数量
   BookInfo.objects.count()
   BookInfo.objects.all().count()
@@ -126,7 +126,12 @@ time = [x['pub_date'].strftime('%Y-%m-%d ') for x in times]
 #返回2010-01-01
 
 ```
+- first() 返回查询的第一个对象
+- last()
+- exists() 是否有数据，有则返回True
+
 ### where
+
 语法格式  关键字（属性名__条件=值）
 #### 条件
 ```
@@ -134,9 +139,12 @@ time = [x['pub_date'].strftime('%Y-%m-%d ') for x in times]
 exact  等于
 contains 包含
 isnull 为空 =True/False
+startswith
+endswith
 in   在...中
 gt  大于 
 gte 大于等于
+iexact/iendswith/xxx 词首添加i，忽略大小写的匹配
 ```
 
 1.filter 过滤
