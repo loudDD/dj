@@ -27,6 +27,6 @@ urlpatterns = [
     path('time/', payview.getweek),
     # path('register/', registerview.register),
     path('book/', include('book.urls')),
-
+    path("",bookview.firstpage)
 
 ]

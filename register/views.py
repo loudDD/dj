@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from register.models import RegisterInfo
+from register.models import RegisterInfo, Deltest
 
 
 # Create your views here.
@@ -21,3 +21,6 @@ def register(request):
         info.save()
 
     return render(request, 'register.html', context)
+
+def testDel(request):
+    name = Deltest.testmanager.all()

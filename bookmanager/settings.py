@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'book.apps.BookConfig',
     'login.apps.LoginConfig',
     'pay.apps.PayConfig',
+    "register.apps.RegisterConfig",
 
 ]
 
@@ -125,5 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
 STATIC_URL = '/static/'
-STATICFILE_SDIRS = (os.path.join(BASE_DIR, "/static/"),)
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static"),
+                     ]

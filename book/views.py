@@ -106,3 +106,7 @@ def getsum(request):
     customer = CustomerInfo.objects.all()
     context = dict(customer=customer)
     return render(request, "customer_info.html", context)
+
+
+def firstpage(request):
+    return render(request,'firstpage.html')
