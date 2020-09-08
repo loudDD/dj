@@ -295,3 +295,35 @@ def xx(request):
     return render(request,'xx.html',context)
 6.
 7.urls中注册路由，写入view
+
+# objects 
+
+- 默认生成
+
+- 可以自己定义
+
+- 关键字：models.Manager()
+
+  ```
+  class Student(models.Model):
+  	stuobject = models.Manager()#此时objects不会再生成
+  ```
+
+- 可以直接继承类，进行数据预处理
+
+  ```
+  class Student(models.Model):
+  	stuobject = models.StudentManager()#此时objects不会再生成
+  class StudentManager(models.Manager):
+  	def get_queryset(self):
+  		return 
+  	deg create(self,a_name = ''):
+      a =self.model()
+      a.create()...
+      super(AnimalManager.self).get_queryset().filter(is_delete=False)
+  #objects.all就是返回get_queryset
+  #对数据预处理，筛选  
+  #调用 Student.StudentManager.all()
+  ```
+
+  
