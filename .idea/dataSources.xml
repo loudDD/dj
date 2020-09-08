@@ -18,5 +18,13 @@
         <property name="serverTimezone" value="UTC" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="Django default" uuid="76d82eaa-834a-4fef-ba2f-1201cfba242b">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/bookmanager/settings.py</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://59.110.71.12:3306/book</jdbc-url>
+    </data-source>
   </component>
 </project>
