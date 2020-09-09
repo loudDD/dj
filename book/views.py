@@ -109,4 +109,12 @@ def getsum(request):
 
 
 def firstpage(request):
-    return render(request,'firstpage.html')
+    return render(request, 'firstpage.html')
+
+
+def gethome(request):
+    return render(request, "home.html", context={"title": "homepage"})
+
+
+def gethome_one(request):
+    return render(request, "home_one.html", context={"title": "homepage"})

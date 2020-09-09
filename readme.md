@@ -274,22 +274,94 @@ TIME_ZONE ='Asia/Shanghai
     - path('re/', include('register.urls'))
 
 # html
-## a标签
+## 功能标签
+### a标签
 - 必须在同级路由器配置好path('book/', bookview.getdata, name='book'),
 - html中使用：
+    ```html
+    <a href="{% url  'book' %}">book</a>
+    book为url中的name
+    ```
+### 过滤器
+- 在变量显示前修改
 ```html
-<a href="{% url  'book' %}">book</a>
-book为url中的name
+{{var | 过滤器}}
+# 加法 add
+{{p_age | add:5}}
+# 减法（没有减法）
+{{p_age | add:-5}}
+# 大写 upper
+{{p_age | upper}}
+# 小写 lower
+{{p_age | lower}}
+# 连接 join
+{{p_age | join "xx"}}
+# 默认值 default
+{{p_age | default value}}
+# 时间装换为字符串date
+{{date | date:'y-m-d'}}
+# safr进行渲染（否则当成字符串）
+{{p_age | safe}}
+autoescapeon不进行渲染
+autoescapeoff 进行渲染
+{% autoescapeon %}
+{% endautoescape%}
 ```
+## 结构标签
+### 继承extends
+- 继承父模板的所有结构
+```
+不再使用html结构，直接{% extends 'xx.html' %}
 
+```
+- **同时，在子模板中无法再自由添加html代码，不生效，只能在既有的block中**
+### 分块 block
+```
+{% block blockname%}
+{% endblock %}
+```
+### include
+```
+{% include 'foot.html' %}
+可以结合block使用
+```
+#### 继承的使用
+- 先进行预设置
+```
+{% block content%}
+	<h1>this is home</h1>
+{% endblock %}
+```
+- 继承使用
+```
+{% extends 'home.html' %}
 
+{% block content %}
+    <h2>this is home one</h2>
+{% endblock %}
+```
+- 覆盖之前的规划
+	- 不想覆盖，而是覆写，可以添加 {{block.super}}，调用父类
+	```
+	{% block content %}
+        {{ block.super }}
+        <h2>this is home one</h2>
+	{% endblock %}
+	```
+## 静态资源使用方法
+```
+#加载static设置
+{% load static %}
+#使用
+{% static 'path'%}
+```
 # 创建app全流程
 1.django-admin start app xxx
 2.settings.py 注册app
 3.在models 中创建表，继承models.Model 
-python manage.py makemigrations
-python manage.py migrate
-4.. 在template中创建html 使用或写入数据
+    python manage.py makemigrations
+    python manage.py migrate
+4.在template中创建html 使用或写入数据
 5.views创建处理函数
 def xx(request):
     return render(request,'xx.html',context)
@@ -304,7 +376,7 @@ def xx(request):
 
 - 关键字：models.Manager()
 
-  ```
+  ```python
   class Student(models.Model):
   	stuobject = models.Manager()#此时objects不会再生成
   ```
