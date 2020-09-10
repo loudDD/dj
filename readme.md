@@ -17,7 +17,26 @@ python manage.py shell 类似ipython，直接显示结果
 	from xx import views as xxx 进行重命名
 	无法导入相同模块名
 	可有多个urls.py  项目和app都可以有，依次从项目的urls开始匹配，app的urls需要在项目的urls传入
+## 匹配顺序
+- 没有最优匹配规则
+```
+url(r'^hehe',views.hehe),
+url(r'^hehehe',views.hehehe)
+当访问hehehe时，匹配到hehe就停止了，返回hehe
+所以路径用/hehe/包括起来，甚至可以加 ^hehe$以hehe开头，hehe结尾
+```
+## 获取参数
+- 通过url路径中的正则+()
+- url返回的参数格式为str
+- 每个()都是一个参数，数量要对应
 
+```python
+url(r'^student/(\d+)/',views.student)
+def student(request,id):
+	#通过形参参数名获取url路径中的参数
+	#参数变成str格式
+	return HttpResponse(id , type(id))
+```
 # views： 
 控制器， 进行数据处理等，即返回数据
 - 传入数据到template中，渲染后，用户通过路径访问
@@ -350,10 +369,11 @@ autoescapeoff 进行渲染
 	```
 ## 静态资源使用方法
 ```
+模板中使用静态文件
 #加载static设置
 {% load static %}
 #使用
-{% static 'path'%}
+{% static 'ralative path'%}
 ```
 # 创建app全流程
 1.django-admin start app xxx
