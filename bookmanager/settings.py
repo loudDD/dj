@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'pay.apps.PayConfig',
     "register.apps.RegisterConfig",
+    'vote.apps.VoteConfig',
 
 ]
 

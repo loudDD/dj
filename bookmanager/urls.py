@@ -20,6 +20,7 @@ import book
 import pay
 from book import views as bookview
 from pay import views as payview
+from vote import views as voteview
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', bookview.indexpage),
@@ -30,5 +31,6 @@ urlpatterns = [
     path("",bookview.firstpage),
     path(r"home/",bookview.gethome),
     path(r"home_one/",bookview.gethome_one),
+    path('vote/',include("vote.urls")),
 
 ]

@@ -30,3 +30,12 @@ class CustomerInfo(models.Model):
     choices = ((0, "女"), (1, "男"))
     c_sex = models.SmallIntegerField(choices)
     c_cost = models.FloatField(default=10.0)
+
+class Question(models.Model):
+    quesion_test = models.CharField(max_length=50)
+    pub_date = models.DateTimeField('data published')
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question,on_delete=models.CASCADE)
+    choice_test = models.CharField(max_length=20)
+    votes = models.IntegerField(default=0)
