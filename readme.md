@@ -26,12 +26,12 @@ url(r'^hehehe',views.hehehe)
 所以路径用/hehe/包括起来，甚至可以加 ^hehe$以hehe开头，hehe结尾
 ```
 ## 获取参数
-- 通过url路径中的正则+()
+- 通过url路径中的<类型:参数名>
 - url返回的参数格式为str
 - 每个()都是一个参数，数量要对应
 
 ```python
-url(r'^student/(\d+)/',views.student)
+url(r'^student/<int:id>/',views.student)
 def student(request,id):
 	#通过形参参数名获取url路径中的参数
 	#参数变成str格式

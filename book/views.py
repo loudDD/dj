@@ -118,3 +118,10 @@ def gethome(request):
 
 def gethome_one(request):
     return render(request, "home_one.html", context={"title": "homepage"})
+
+
+def students(request):
+    return render(request,'students.html',context={"id" : "10"})
+
+def student(request,id):
+    return render(request,'students.html',context={"id" : id})

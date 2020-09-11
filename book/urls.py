@@ -7,5 +7,7 @@ urlpatterns = [
     path('update/', bookview.updateData),
     path('get/', bookview.getData),
     path('book/', bookview.getdata, name='book'),
-    path('getsum/', bookview.getsum)
+    path('getsum/', bookview.getsum),
+    path('students/',bookview.students),
+    path('student/<int:id>/',bookview.student)
 ]
