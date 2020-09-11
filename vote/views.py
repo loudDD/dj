@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
+from vote.models import Question
+
+
 def home(request):
     return HttpResponse("welcome to Vote Page")
 
@@ -14,3 +17,8 @@ def results(request, question_id):
 
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
+
+def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    output = ','.join([q.question_text for q in latest_question_list])
+    return render(request,'index_vote.html',context={"vote_list": latest_question_list})

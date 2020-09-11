@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote Choices</title>
+</head>
+<body>
+{% if vote_list %}
+    <ul>
+    {% for vote in vote_list %}
+        <li>{{ vote.question_text }}</li>
+    {% endfor %}
+
+    </ul>
+{% endif %}
+</body>
+</html>
