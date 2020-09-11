@@ -20,18 +20,18 @@ python manage.py shell 类似ipython，直接显示结果
 ## 匹配顺序
 - 没有最优匹配规则
 ```
-url(r'^hehe',views.hehe),
-url(r'^hehehe',views.hehehe)
+path(r'^hehe',views.hehe),
+path(r'^hehehe',views.hehehe)
 当访问hehehe时，匹配到hehe就停止了，返回hehe
 所以路径用/hehe/包括起来，甚至可以加 ^hehe$以hehe开头，hehe结尾
 ```
 ## 获取参数
 - 通过url路径中的<类型:参数名>
 - url返回的参数格式为str
-- 每个()都是一个参数，数量要对应
+- 每个<>都是一个参数，数量要对应
 
 ```python
-url(r'^student/<int:id>/',views.student)
+path(r'^student/<int:id>/',views.student)
 def student(request,id):
 	#通过形参参数名获取url路径中的参数
 	#参数变成str格式
@@ -292,7 +292,18 @@ TIME_ZONE ='Asia/Shanghai
 - 需要在一级路由注册二级路由
     - path('re/', include('register.urls'))
 
+# admin.py
+
+```
+from django.contrib import admin
+from .models import Question
+admin.site.register(Question)#添加question到管理页面，可以进行数据处理，相当于数据库的前段处理界面
+```
+
+
+
 # html
+
 ## 功能标签
 ### a标签
 - 必须在同级路由器配置好path('book/', bookview.getdata, name='book'),
@@ -419,3 +430,12 @@ def xx(request):
   ```
 
   
+
+# 数据库外键
+
+```
+question = models.ForeignKey(Question,on_delete=models.CASCADE)
+question 作为Question的主键
+每个 question 都关联到一个 Question 对象
+```
+
