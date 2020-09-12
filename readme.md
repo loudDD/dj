@@ -37,7 +37,52 @@ def student(request,id):
 	#参数变成str格式
 	return HttpResponse(id , type(id))
 ```
+## 状态码
+### 异常状态
+#### 手动抛出异常
+``` Http404
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question doesn't exist")
+```
+#### 自动抛出异常
+- from django.shortcuts import  get_object_or_404
+- get_object_or_404(model对象，条件)
+```
+question = get_object_or_404(Question, pk=question_id)
+return render(request, "polls/datails.html", {question: question})
+```
+### 重定向
+- 相对url '/vote/details
+- 完整url ‘https://example.com’
+- models对象
+```python
+def xxx(request):
+	return redirect()
+	
+```
+## URL 命名空间
+
+- 为了分辨不同app重名的url
+
+- 添加 urls.py添加 app_name = 'appname'
+
+  ```
+  app_name = 'polls'
+  urlpatterns = []
+  ```
+
+- html中,viewname -> appname:viewname
+
+  ```
+  <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+  ```
+
+  
+
 # views： 
+
 控制器， 进行数据处理等，即返回数据
 - 传入数据到template中，渲染后，用户通过路径访问
 - render(request,"pagename.html,context)
@@ -146,8 +191,20 @@ time = [x['pub_date'].strftime('%Y-%m-%d ') for x in times]
 
 ```
 - first() 返回查询的第一个对象
+
 - last()
+
 - exists() 是否有数据，有则返回True
+
+- 查询集
+
+  ```
+  classnumber = Student.objects.filter(class="1")
+  students = classnumber.s_name_set.all
+  级联查询时，如果返回的是一个列表，django会自动将结果变成一个结果set 字段__set，再通过set来遍历，获取每个元素的字段
+  ```
+
+  
 
 ### where
 
@@ -173,6 +230,9 @@ BookInfo.objects.filter(id__exact=1)['name']
 返回格式不同，filter可以通过列表取值方式取值
 ```
 2.exclude 筛选后的结果
+
+
+
 ## 修改数据
 ### 方式1
 ```
@@ -306,11 +366,17 @@ admin.site.register(Question)#添加question到管理页面，可以进行数据
 
 ## 功能标签
 ### a标签
-- 必须在同级路由器配置好path('book/', bookview.getdata, name='book'),
+- {% url %}
+
+- 最好在同级路由器配置好path('book/', bookview.getdata, name='book'),
+
 - html中使用：
     ```html
-    <a href="{% url  'book' %}">book</a>
-    book为url中的name
+    <a href="{% url  'book' book_id %}">book</a>
+    可以为html地址，也可以用url中的name,可以进行传参
+    #urls
+    path('book/<int:book_id>/', views.book, name='book'),
+    
     ```
 ### 过滤器
 - 在变量显示前修改
@@ -386,7 +452,10 @@ autoescapeoff 进行渲染
 #使用
 {% static 'ralative path'%}
 ```
+
+
 # 创建app全流程
+
 1.django-admin start app xxx
 2.settings.py 注册app
 3.在models 中创建表，继承models.Model 
