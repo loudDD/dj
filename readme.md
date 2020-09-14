@@ -444,7 +444,24 @@ autoescapeoff 进行渲染
 {% autoescapeon %}
 {% endautoescape%}
 ```
+### input
+
+- type
+  - text
+  - password
+  - submit
+    - value 文字显示
+- placeholde
+  - 输入框默认显示
+
+```
+<input type=''
+```
+
+
+
 ## 结构标签
+
 ### 继承extends
 - 继承父模板的所有结构
 ```

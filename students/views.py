@@ -53,3 +53,15 @@ def add(request):
             return HttpResponse("添加成功")
         else:
             return HttpResponse('添加失败')
+
+
+def delete(request):
+    if request.method == "GET":
+        return render(request, 'delete.html')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        Students.objects.get(s_name=name).delete()
+        if not Students.objects.filter(s_name=name):
+            return HttpResponse("删除成功")
+        else:
+            return HttpResponse('删除失败')
