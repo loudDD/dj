@@ -30,3 +30,6 @@ def students(request,class_id):
 
 
 def gender(request):
+    #增加学生性别
+    #可以删除学生，添加学生
+    return
