@@ -71,11 +71,18 @@ def xxx(request):
   ```
   app_name = 'polls'
   urlpatterns = []
+  or
+  根路由中
+  urlpatterns = [
+  path("demo/",includ('demo.urls'),app_name=" ")
+  ]
   ```
 
 - html中,viewname -> appname:viewname
 
   ```
+  app_name=polls
+  path('detail/<int:question_id>/',view.detail,name='detail')
   <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
   ```
 
