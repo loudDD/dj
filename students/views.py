@@ -27,3 +27,6 @@ def students(request,class_id):
     students_list = Students.objects.filter(s_class=class_id)
     context = {"students_list":students_list}
     return render(request,'students_list.html',context)
+
+
+def gender(request):

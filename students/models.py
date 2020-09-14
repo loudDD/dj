@@ -17,3 +17,4 @@ class Students(models.Model):
 
     s_name = models.CharField(max_length=30)
     s_class = models.ForeignKey(Class_List,on_delete=models.CASCADE)
+    s_gender = models.SmallIntegerField()
