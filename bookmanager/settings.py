@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'pay.apps.PayConfig',
     "register.apps.RegisterConfig",
     'vote.apps.VoteConfig',
+    'students',
 
 ]
 
@@ -61,6 +62,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 设置模板路径
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                os.path.join(BASE_DIR, 'students','templates'),
                  ]
         ,
         'APP_DIRS': True,

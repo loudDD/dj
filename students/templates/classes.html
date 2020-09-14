@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Classes</title>
+</head>
+<body>
+<ul>
+    {% for class in classlist %}
+        <li><a href={% url "student:student" class.id %}>{{ class.id }}</a></li>
+    {% endfor %}
+
+</ul>
+</body>
+</html>

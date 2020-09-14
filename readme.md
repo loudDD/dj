@@ -6,7 +6,7 @@ python manage.py shell 类似ipython，直接显示结果
 	model:连接数据库，使用面向的对象的方式，来处理
 	view: 视图（控制器），接收请求，处理数据，返回响应
 	template:html，css,js等html模板文件	 ，视图返回请求前，通过出入处理后的数据到template文件渲染后，进行响应
-# template: 
+# template: x
 	html文件模板
 	文件需要在setting.py  templates中注册，3.1自动添加路径
 # url: 
@@ -169,6 +169,41 @@ BookInfo.objects.create(
 	xx= '',
 )
 ```
+### 涉及外键
+
+```
+
+class Students(models.Model):
+
+    s_name = models.CharField(max_length=30)
+
+
+
+class Class_List(models.Model):
+
+    c_name = models.CharField(max_length=100)
+    c_classid = models.ForeignKey(Students, on_delete=models.CASCADE)
+```
+
+1. 需先插入Students数据
+
+2. 插入Class_List数据时，c_classid需等于Students的对象
+
+   ```
+       student = Students.objects.get(pk=1)
+       studen1 = Students.objects.get(pk=2)
+       Class_List.objects.create(c_name="classone",c_classid=student)
+       Class_List.objects.create(c_name="classtwo",c_classid=studen1)
+       Class_List.objects.create(c_name="class3",c_classid=studen1)
+       # Students.objects.create(s_name="tom1")
+       # Students.objects.create(s_name="jerry2")
+       # Students.objects.create(s_name="lily3")
+   ```
+
+   
+
+
+
 ## 查询数据
 
 - get 返回一条数据的对象

@@ -28,9 +28,10 @@ urlpatterns = [
     path('time/', payview.getweek),
     # path('register/', registerview.register),
     path('book/', include('book.urls')),
-    path("",bookview.firstpage),
+    path("",bookview.firstpage,name='home'),
     path(r"home/",bookview.gethome),
     path(r"home_one/",bookview.gethome_one),
     path('vote/',include("vote.urls")),
+    path('students/',include('students.urls'))
 
 ]
