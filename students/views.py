@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -30,6 +31,25 @@ def students(request,class_id):
 
 
 def gender(request):
-    #增加学生性别
+
     #可以删除学生，添加学生
     return
+
+
+def add(request):
+    if request.method == "GET":
+        return render(request,'add.html')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        _class = request.POST.get('class')
+        gender = request.POST.get('gender')
+        realclass = Class_List.objects.get(pk=_class)
+        Students.objects.create(
+            s_name= name,
+            s_class=realclass,
+            s_gender= gender
+        )
+        if Students.objects.filter(s_name=name):
+            return HttpResponse("添加成功")
+        else:
+            return HttpResponse('添加失败')
