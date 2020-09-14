@@ -173,31 +173,30 @@ BookInfo.objects.create(
 
 ```
 
-class Students(models.Model):
-
-    s_name = models.CharField(max_length=30)
-
-
-
 class Class_List(models.Model):
 
     c_name = models.CharField(max_length=100)
-    c_classid = models.ForeignKey(Students, on_delete=models.CASCADE)
+
+class Students(models.Model):
+
+    s_name = models.CharField(max_length=30)
+    s_class = models.ForeignKey(Class_List,on_delete=models.CASCADE)
 ```
 
-1. 需先插入Students数据
+1. 需先插入Class_List数据
 
-2. 插入Class_List数据时，c_classid需等于Students的对象
+2. 插入Students数据时，s_classid需等于Class_List的实例
 
    ```
-       student = Students.objects.get(pk=1)
-       studen1 = Students.objects.get(pk=2)
-       Class_List.objects.create(c_name="classone",c_classid=student)
-       Class_List.objects.create(c_name="classtwo",c_classid=studen1)
-       Class_List.objects.create(c_name="class3",c_classid=studen1)
-       # Students.objects.create(s_name="tom1")
-       # Students.objects.create(s_name="jerry2")
-       # Students.objects.create(s_name="lily3")
+          # Class_List.objects.create(c_name="classone")
+       # Class_List.objects.create(c_name="classtwo")
+       # Class_List.objects.create(c_name="class3")
+       class1 = Class_List.objects.get(pk=1)
+       class2 = Class_List.objects.get(pk=2)
+       Students.objects.create(s_name="tom1",s_class=class1)
+       Students.objects.create(s_name="jerry2",s_class=class1)
+       Students.objects.create(s_name="lily3",s_class=class2)
+   
    ```
 
    
