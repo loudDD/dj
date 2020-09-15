@@ -408,6 +408,85 @@ admin.site.register(Question)#添加question到管理页面，可以进行数据
 
 # html
 
+## 逻辑判断
+
+### for
+
+```
+{%for x in xx %}
+{% endfor %}
+```
+
+- 反向迭代 reversed
+
+  ```
+  {% for x in xx reversed %}
+  ```
+
+- 可对二元组，字典等进行解包
+
+```
+for x,y in xx
+{{x}}{{y}}
+```
+
+- forloop
+
+  - forloop.count 从1开始计数
+
+  - forloop.count0 从0开始计数
+
+  - forloop.revcounter 剩余数量，第一次为n，最后一次为1
+
+  - forloop.revcounter0 剩余数量，第一次为n-1，最后一次为0
+
+  - forloop.first 第一次遍历时，返回True
+
+  - forloop.last最后一次遍历时，返回True
+
+  - forloop.parentloop 嵌套循环式，父循环
+
+    ```
+    {% for country in countries %}
+        <table>
+        {% for city in country.city_list %}
+            <tr>
+            <td>Country #{{ forloop.parentloop.counter }}</td>
+            <td>City #{{ forloop.counter }}</td>
+            <td>{{ city }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+    
+    ```
+
+    
+
+### if
+
+```
+{% if %}
+{% elif %}
+{% endif %}
+```
+
+
+
+### 判空
+
+- if
+
+- empty标签
+
+  ```
+  {% empty %}
+  	do
+  {# 一般for为空时，进行判空处理#}
+  ```
+
+  
+
 ## 功能标签
 ### a标签
 - {% url %}
