@@ -531,7 +531,7 @@ autoescapeoff 进行渲染
 
 - 当请求时，传入多对相同键参数
   - "http://127.0.0.1:8000/students/test?name=tom&name=jerry"
-  - 会生成一个类字典结构数据，储存所有的值
+  - 会生成一个类字典结构数据，储存同一个键的所有值
   - 获取：request.GET.get(key)
     - 只返回最后一个结果
   - 全部获取request.GET.getlist(key)
