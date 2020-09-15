@@ -2,6 +2,9 @@ pycharm导入db需要下载插件
 django-admin startproject xx
 python manage.py startapp xx
 python manage.py shell 类似ipython，直接显示结果
+
+python manage.py runserver 0.0.0.0:8000 所有局域网内可以访问
+
 # MVT：
 	model:连接数据库，使用面向的对象的方式，来处理
 	view: 视图（控制器），接收请求，处理数据，返回响应
@@ -458,8 +461,16 @@ autoescapeoff 进行渲染
 <input type=''
 ```
 
+### form
 
-
+```
+<form action ="" >
+	<input type='text' name = "">
+</form>
+```
+- action 执行时，跳转的页面
+	- 跳转的页面可以获取数据，request.POST.get(input's name)	
+- method 请求方式
 ## 结构标签
 
 ### 继承extends
@@ -510,6 +521,22 @@ autoescapeoff 进行渲染
 #使用
 {% static 'ralative path'%}
 ```
+
+# 请求
+
+- request.META
+  - 打印请求所有信息
+
+## get
+
+- 当请求时，传入多对相同键参数
+  - "http://127.0.0.1:8000/students/test?name=tom&name=jerry"
+  - 会生成一个类字典结构数据，储存所有的值
+  - 获取：request.GET.get(key)
+    - 只返回最后一个结果
+  - 全部获取request.GET.getlist(key)
+    - 返回所有结果（列表形式）
+
 
 
 # 创建app全流程
