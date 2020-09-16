@@ -643,12 +643,34 @@ autoescapeoff 进行渲染
 
 # 响应
 
+## 属性
+
+- content
+- charset
+- status_code
+
 - content-type
   - 类似文件扩展名，不影响内容，为浏览器指引文件打开方式
   - MIME
   - 内容包括大类型和具体类型
     - text 大类型
     - html /plain具体类型
+
+## 方法
+
+- init 初始化
+
+- write（）直接写初文件
+
+  ```
+  HttpsResponse().write()
+  ```
+
+  
+
+- flush() 冲刷缓冲区，
+
+- set_cooke()
 
 # 创建app全流程
 
