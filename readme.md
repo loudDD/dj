@@ -40,32 +40,12 @@ def student(request,id):
 	#参数变成str格式
 	return HttpResponse(id , type(id))
 ```
-## 状态码
-### 异常状态
-#### 手动抛出异常
-``` Http404
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404("Question doesn't exist")
-```
-#### 自动抛出异常
-- from django.shortcuts import  get_object_or_404
-- get_object_or_404(model对象，条件)
-```
-question = get_object_or_404(Question, pk=question_id)
-return render(request, "polls/datails.html", {question: question})
-```
-### 重定向
-- 相对url '/vote/details
-- 完整url ‘https://example.com’
-- models对象
-```python
-def xxx(request):
-	return redirect()
-	
-```
+
+
+
 ## URL 命名空间
+
+- 反向解析，解除硬编码，通过appname:viewname定位
 
 - 为了分辨不同app重名的url
 
@@ -93,7 +73,10 @@ def xxx(request):
 
 # views： 
 
+## 基础使用
+
 控制器， 进行数据处理等，即返回数据
+
 - 传入数据到template中，渲染后，用户通过路径访问
 - render(request,"pagename.html,context)
 ```
@@ -103,7 +86,20 @@ result = page.render(context)
 return HttpResponse(result)
 ```
 - 直接返回内容用HttpResponse("")
+
 - context 字典，可传入参数到html，html使用参数 {{字典key}}
+
+  ## 扩展
+
+  ### 反向解析
+
+  ```
+  from django.urls import reverse
+  
+  render(reverse("appname:viewname"))
+  ```
+
+    
 
 # model: ORM
 ## 数据类型
@@ -665,12 +661,84 @@ autoescapeoff 进行渲染
   ```
   HttpsResponse().write()
   ```
-
-  
-
-- flush() 冲刷缓冲区，
+ - flush() 冲刷缓冲区，
 
 - set_cooke()
+  ### JsonResponse
+
+  - json
+    - 主要内容
+      - JsonObject
+        - key:value
+      - JsonArray
+        - []
+        - 普通数据类型或Json
+      - JsonObject可以和JsonArray嵌套
+
+  - 请求头内容自动返回content-type格式为application/json
+
+    ```python
+    data = {"name":“tom"}
+    return JsonResponse(data=)
+    # html
+    {"name":“tom"}
+    ```
+## 状态码
+
+
+question = get_object_or_404(Question, pk=question_id)
+return render(request, "polls/datails.html", {question: question})
+```
+    ### 重定向
+
+	- 参数 重定向的url
+
+    #### 301
+    ```
+    HttpResonsePermanentRedirect() #状态码301，永久
+    ```
+    #### 302
+    ```
+    redirect = HttpResponseRedirect() #状态码302,临时
+    ```
+
+### 400
+- HttpResponseBadRequest
+#### 403
+- HttpResponseForbidden 
+#### 404
+- HttpResponseNotFound
+#### 405
+- HttpResponseServerError
+### Http404
+### 手动抛出异常
+``` Http404
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question doesn't exist")
+```
+### 自动抛出异常
+- from django.shortcuts import  get_object_or_404
+- get_object_or_404(model对象，条件)
+```
+
+## 会话技术
+- cookie
+	- 客户端会话技术
+	- 数据储存在客户端
+	- 键值对形式
+	- 默认cookie自动携带，本网站所有cookie
+	- 支持过期时间
+	- Cookie不能跨域名，跨网站
+	- HttpResponse返回
+```
+HttpResponse().set_cookie('username', 'tom')
+#html network
+变成键值对形式的cookie
+```
+
+
 
 # 创建app全流程
 

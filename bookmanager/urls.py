@@ -21,6 +21,7 @@ import pay
 from book import views as bookview
 from pay import views as payview
 from vote import views as voteview
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('res/', bookview.response),
@@ -29,10 +30,11 @@ urlpatterns = [
     path('time/', payview.getweek),
     # path('register/', registerview.register),
     path('book/', include('book.urls')),
-    path("",bookview.firstpage,name='home'),
-    path(r"home/",bookview.gethome),
-    path(r"home_one/",bookview.gethome_one),
-    path('vote/',include("vote.urls")),
-    path('students/',include('students.urls')),
+    path("", bookview.firstpage, name='home'),
+    path(r"home/", bookview.gethome),
+    path(r"home_one/", bookview.gethome_one),
+    path('vote/', include("vote.urls")),
+    path('students/', include('students.urls')),
+    path('cookie/', include('cookie.urls')),
 
 ]

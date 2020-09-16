@@ -1,7 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.urls import reverse
+
 from students.models import Class_List, Students
 
 
@@ -64,7 +66,9 @@ def delete(request):
         if not Students.objects.filter(s_name=name):
             return HttpResponse("删除成功")
         else:
+            return JsonResponse()
             return HttpResponse('删除失败')
+
 
 def test(request):
     print(request.path)
