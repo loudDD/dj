@@ -432,9 +432,9 @@ for x,y in xx
 
 - forloop
 
-  - forloop.count 从1开始计数
+  - forloop.counter 从1开始计数
 
-  - forloop.count0 从0开始计数
+  - forloop.counter0 从0开始计数
 
   - forloop.revcounter 剩余数量，第一次为n，最后一次为1
 
@@ -471,7 +471,20 @@ for x,y in xx
 {% endif %}
 ```
 
+- ifequal
 
+  ```
+  {% ifequal value1 value2%}
+  ```
+
+
+ - ifnotequal
+
+    ```
+    {% ifequal value1 value2%}
+    ```
+
+    
 
 ### 判空
 
@@ -519,13 +532,25 @@ for x,y in xx
 {{p_age | default value}}
 # 时间装换为字符串date
 {{date | date:'y-m-d'}}
-# safr进行渲染（否则当成字符串）
+# safe进行渲染（否则当成字符串）
 {{p_age | safe}}
 autoescapeon不进行渲染
 autoescapeoff 进行渲染
 {% autoescapeon %}
 {% endautoescape%}
+# 整除divisibleby
+{% forloop.counter0|divisibleby:2 %}
 ```
+## csrf
+
+- django中用于跨站请求伪造保护
+
+  ```
+  {% csrf_token %}
+  ```
+
+  
+
 ### input
 
 - type
@@ -616,7 +641,14 @@ autoescapeoff 进行渲染
   - 全部获取request.GET.getlist(key)
     - 返回所有结果（列表形式）
 
+# 响应
 
+- content-type
+  - 类似文件扩展名，不影响内容，为浏览器指引文件打开方式
+  - MIME
+  - 内容包括大类型和具体类型
+    - text 大类型
+    - html /plain具体类型
 
 # 创建app全流程
 

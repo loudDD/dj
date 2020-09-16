@@ -23,6 +23,7 @@ from pay import views as payview
 from vote import views as voteview
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('res/', bookview.response),
     path('index/', bookview.indexpage),
     path('data/', bookview.getdata),
     path('time/', payview.getweek),
@@ -32,6 +33,6 @@ urlpatterns = [
     path(r"home/",bookview.gethome),
     path(r"home_one/",bookview.gethome_one),
     path('vote/',include("vote.urls")),
-    path('students/',include('students.urls'))
+    path('students/',include('students.urls')),
 
 ]

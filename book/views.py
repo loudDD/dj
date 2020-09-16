@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.http import HttpResponse
 from django.shortcuts import render
 from book.models import BookInfo, CustomerInfo
 
@@ -121,7 +122,16 @@ def gethome_one(request):
 
 
 def students(request):
-    return render(request,'students.html',context={"id" : "10"})
+    return render(request, 'students.html', context={"id": "10"})
 
-def student(request,id):
-    return render(request,'students.html',context={"id" : id})
+
+def student(request, id):
+    return render(request, 'students.html', context={"id": id})
+
+
+def response(request):
+
+    response = HttpResponse()
+    response.content = "hello"
+    response.status = 404
+    return response

@@ -8,7 +8,12 @@
 <h2>Students List</h2>
 <ul>
     {% for student in students_list %}
-        <li>{{ student.s_name }} <a href="">delete</a></li>
+        {% if forloop.counter0|divisibleby:2  %}
+            <li style="color : red">{{ student.s_name }} <a href="">delete</a></li>
+        {% else %}
+            <li>{{ student.s_name }} <a href="">delete</a></li>
+        {% endif %}
+
     {% endfor %}
 
 </ul>
