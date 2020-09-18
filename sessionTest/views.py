@@ -9,7 +9,8 @@ from django.urls import reverse
 def index(request):
     note = "This is the index page of sessionTest"
     name = None
-    
+
+
     try:
         name = request.session.get("username")
     except :
@@ -24,4 +25,5 @@ def index(request):
 
 def login(request):
     if request.method == "GET":
-        return render(request,'sessionTest/login.html')
+        request.session.flush()
+    return render(request,'sessionTest/login.html')

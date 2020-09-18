@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Personal Center</title>
+{% endblock %}
+
+{% block body %}
+    <span>username:</span><span>{{ username }}</span>
+    <span>password:</span><span>{{ password }}</span>
+    <a href={% url 'token:login' %}>退出登录</a>
+{% endblock %}

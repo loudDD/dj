@@ -91,14 +91,15 @@ return HttpResponse(result)
 
   ## 扩展
 
-  ### 反向解析
+  ### python中反向解析
 
   ```
   from django.urls import reverse
   
   render(reverse("appname:viewname"))
   ```
-
+	- 位置参数传参reverse('appname:viewname',args=(value1,))
+	- 关键字参数reverse('appname:viewname',kwargs={})
     
 
 # model: ORM
@@ -460,6 +461,16 @@ for x,y in xx
     
     ```
 
+#### 判空
+
+- empty标签
+
+  ```
+  {% empty %}
+  	do
+  {# 一般for为空时，进行判空处理#}
+  ```
+
     
 
 ### if
@@ -484,18 +495,6 @@ for x,y in xx
     ```
 
     
-
-### 判空
-
-- if
-
-- empty标签
-
-  ```
-  {% empty %}
-  	do
-  {# 一般for为空时，进行判空处理#}
-  ```
 
   
 
@@ -540,13 +539,6 @@ autoescapeoff 进行渲染
 # 整除divisibleby
 {% forloop.counter0|divisibleby:2 %}
 ```
-## csrf
-
-- django中用于跨站请求伪造保护
-
-  ```
-  {% csrf_token %}
-  ```
 
   
 
@@ -771,7 +763,56 @@ response.delete_cookie(key)
 
 ### session
 
+- 设置session
 
+  ```
+  request.session[key] = value
+  ```
+
+- 获取session
+
+  ```
+  request.session.get(key),没有返回None
+  or
+  request.seeion[key],没有报错
+  ```
+
+- 默认 混淆串+字符 进行Base64转码，所以支持中文
+
+- 默认过期时间14天
+
+- session依赖cookie 通过{sessionid：value} 以cookie形式保存
+
+  ### token
+
+  - 服务端会话技术
+
+  - 自定义的session
+
+  - web页面开发中，使用与session基本一致
+
+  - 服务端与客户端，通常以json形式传输，需要移动端自己储存token，需要获取token关联数据的时候，主动传递token
+
+### 对比
+
+    - cookie 储存在本地，服务器压力小，数据不安全
+    - session储存在服务器，需要维护，相对安全
+    - token 是自定义session，自己维护相对麻烦，但支持更多终端
+### csrf
+
+- django中用于跨站请求伪造保护
+- 防止恶意注册，确保客户端是自己的客户端
+- 使用cookie中的csrftoken进行验证，传输
+- 服务端发送给客户端，客户端将cookie获取过来，还要进行编码转换（数据安全）
+- 
+
+  ```
+  {% csrf_token %}
+  效果
+1.在请求头添加一个token
+2.页面加一个隐藏的input标签，内含token（从cookie获取）
+  ```
+  
 
 # 创建app全流程
 
@@ -830,3 +871,16 @@ question 作为Question的主键
 
 
 ```
+
+# 其他
+
+## 自行加密
+
+### hashlib
+
+```
+hashlib.new('编码',"数据").hexdigect()
+返回bytes
+
+```
+

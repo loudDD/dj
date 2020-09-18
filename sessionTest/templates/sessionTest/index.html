@@ -5,7 +5,11 @@
 
 {% block body %}
     <span>{{ note }}</span>
+    <br>
     <span>{{ name }}</span>
+    {% if  request.session.username  != "None" %}
+        <a href={% url 'session:login' %}>logout</a>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}

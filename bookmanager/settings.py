@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'students',
     'cookie',
     'sessionTest',
+    'tokenTest',
 
 ]
 
@@ -67,6 +68,7 @@ TEMPLATES = [
                 os.path.join(BASE_DIR, 'students','templates'),
                 os.path.join(BASE_DIR, 'cookie','templates'),
                 os.path.join(BASE_DIR, 'sessionTest','templates'),
+                os.path.join(BASE_DIR, 'tokenTest','templates'),
                  ]
         ,
         'APP_DIRS': True,
