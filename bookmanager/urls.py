@@ -36,5 +36,6 @@ urlpatterns = [
     path('vote/', include("vote.urls")),
     path('students/', include('students.urls')),
     path('cookie/', include('cookie.urls')),
+    path('session/',include('sessionTest.urls')),
 
 ]

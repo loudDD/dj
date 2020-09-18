@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'vote.apps.VoteConfig',
     'students',
     'cookie',
+    'sessionTest',
 
 ]
 
@@ -64,6 +65,8 @@ TEMPLATES = [
         # 设置模板路径
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
                 os.path.join(BASE_DIR, 'students','templates'),
+                os.path.join(BASE_DIR, 'cookie','templates'),
+                os.path.join(BASE_DIR, 'sessionTest','templates'),
                  ]
         ,
         'APP_DIRS': True,

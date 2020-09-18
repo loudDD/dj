@@ -404,7 +404,10 @@ admin.site.register(Question)#添加question到管理页面，可以进行数据
 
 # html
 
-## 逻辑判断
+- 不同app的template中有同名的html
+  - 在template中创建app同名的文件夹
+  - 文件夹中创建html
+  - views中引用时，'appname/htmlname.html'
 
 ### for
 
@@ -694,7 +697,7 @@ return render(request, "polls/datails.html", {question: question})
 	- 参数 重定向的url
 
     #### 301
-    ```
+```
     HttpResonsePermanentRedirect() #状态码301，永久
     ```
     #### 302
@@ -721,22 +724,52 @@ return render(request, "polls/datails.html", {question: question})
 ### 自动抛出异常
 - from django.shortcuts import  get_object_or_404
 - get_object_or_404(model对象，条件)
-```
+
 
 ## 会话技术
-- cookie
-	- 客户端会话技术
-	- 数据储存在客户端
-	- 键值对形式
-	- 默认cookie自动携带，本网站所有cookie
-	- 支持过期时间
-	- Cookie不能跨域名，跨网站
-	- HttpResponse返回
+### cookie
+
+- 客户端会话技术
+- 数据储存在客户端
+- 键值对形式
+- 默认cookie自动携带，本网站所有cookie
+- 支持过期时间
+- Cookie不能跨域名，跨网站
+
+- 设置cookie,通过HttpResponse返回
 ```
 HttpResponse().set_cookie('username', 'tom')
 #html network
 变成键值对形式的cookie
 ```
+- 超时
+	- max_age 
+		- 单位 s 
+		- 0 浏览器关闭失效
+		- None 永不失效
+	- expires 
+		- datetime
+		- timedelta
+- 默认不支持中文，可以自行转换
+
+- 获取cookie
+```
+request.COOKIES.get("name")
+```
+#### set_signed_cookie
+
+- salt 加密，仍不支持中文 
+- 获取需要解密
+```
+request.get_signed_cookie(content,salt='')#内容与加密时一样就行
+```
+#### 删除
+
+```
+response.delete_cookie(key)
+```
+
+### session
 
 
 
@@ -766,10 +799,11 @@ def xx(request):
   class Student(models.Model):
   	stuobject = models.Manager()#此时objects不会再生成
   ```
+```
 
 - 可以直接继承类，进行数据预处理
 
-  ```
+```
   class Student(models.Model):
   	stuobject = models.StudentManager()#此时objects不会再生成
   class StudentManager(models.Manager):
@@ -788,9 +822,11 @@ def xx(request):
 
 # 数据库外键
 
-```
+  ```
 question = models.ForeignKey(Question,on_delete=models.CASCADE)
 question 作为Question的主键
 每个 question 都关联到一个 Question 对象
 ```
 
+
+```

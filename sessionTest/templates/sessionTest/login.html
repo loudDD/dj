@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action={% url 'session:index' %} method="post">
+    <span>
+        <input type="text" name = 'username' placeholder="Username">
+        <input type="submit" value="Login">
+    </span>
+</form>
+</body>
+</html>
