@@ -136,7 +136,7 @@ return HttpResponse(result)
 	gender = models.SmallIntegerField(choices=gender_choice,default=0)
 	```
 	12.外键 ON_DELETE = models.CASCADE
-		1.CASCADE 删除主表的时候，从表数据也删掉
+		1.CASCADE 删除主表的时候，从表数据也删掉;从表数据无法直接删除
 		2.PROTECT 无法删除主表字段时
 		3.SET_NULL 主表字段删除后，不影响从表，从表相关字段变为null
 	13. DateField 传入值格式为datetime
@@ -335,7 +335,82 @@ BookInfo.objects.filter(id=1).delete()
 book = BookInfo.objects.get(id=1)
 book.delete()
 ```
+## 模型关系
+
+- 1:1 
+	- 使用场景：复杂表拆解
+	- Django中OneToOneField
+	- on_field
+	- 实现
+  - 通过外键相似的OneToOneField实现，相当于ForeignKey中添加了unique=true
+  - 对外键添加了唯一约束（本来外键是N:1） 
+- 1：N
+	- 通过ForeignKey实现
+	- 一个主表（mon）的数据，对应多个从表(children)的数据
+	- on_field
+	- related_quest_name
+
+- M:N
+
+- 主表：将主表的外键作为主键的表
+
+- 从表：建立外键的表
+
+- 谁声明关系，谁是从表
+
+- 开发中，谁是主表
+
+  - 如果必须删一个，留的是主表，删的是从表
+  - 作为主键的是主表
+
+### 默认属性：
+
+#### CASCADE
+
+- 从表删除，主表不受影响
+
+- 主表删除，从表直接删除
+
+#### PROTECT
+
+- 为防止误操作，通常设置为此模式
+- 主表如果存在级联数据，删除动作受保护，不能成功
+- 想删，需要删除主表中所有级联数据
+#### SET
+- SET_NULL
+- SET_DEFAULT 传入默认值
+- SET()
+
+### 级联数据获取
+- 主获取从，隐形属性，默认就是级联模型的名字
+- 从获取主，显性属性，就是属性的名字
+- 其实只是有没有自动代码补充
+
+## ForeignKey
+- ForeignKey默认关联到主表的pk,但是on_field可以指定字段
+- 默认related_query_name = 字段_set
+- 外键添加关联是，需要的是从表实例，而不是具体对应的字段
+
+```
+class Person(models.Model):Z ., b   kk /Zz                          hhh
+    p_name = models.CharField(max_length=16)
+    p_sex = models.BooleanField(default=False)
+
+class IDCard(models.Model):
+    id_num = models.CharField(max_length=18,unique=True)
+    id_person = models.OneToOneField(Person,null=True,blank = True , on_delete=models.CASCADE)
+    
+    def bind_card(request):
+        person = Person.objects.last()
+        idcard= IDCard.objects.last()
+        idcard.id_person = person
+        return HttpResponse('绑定成功')
+```
+
+
+
 ## 数据异常捕获
+
 ```
 try:
 	BookInfo.objects.get(id=10)
@@ -368,7 +443,10 @@ DATABSES= {
 4.进行迁移
 
 # setting.py
-## INSTALLED_APPS 中进行app的注册，可使用包名或包.apps.类名	
+## INSTALLED_APPS 
+
+INSTALLED_APPS 中进行app的注册，可使用包名或包.apps.类名	
+
 ## 静态文件
 ### STATIC_URL 
 STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
