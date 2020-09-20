@@ -63,13 +63,17 @@ def student(request,id):
 
 - html中,viewname -> appname:viewname
 
-  ```
+  ```- 
   app_name=polls
   path('detail/<int:question_id>/',view.detail,name='detail')
   <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
   ```
 
-  
+- 多级路由
+
+  - 二级路由内容和一级一样
+  - 需要在一级路由注册二级路由
+    - path('re/', include('register.urls'))
 
 # views： 
 
@@ -337,21 +341,6 @@ book.delete()
 ```
 ## 模型关系
 
-- 1:1 
-	- 使用场景：复杂表拆解
-	- Django中OneToOneField
-	- on_field
-	- 实现
-  - 通过外键相似的OneToOneField实现，相当于ForeignKey中添加了unique=true
-  - 对外键添加了唯一约束（本来外键是N:1） 
-- 1：N
-	- 通过ForeignKey实现
-	- 一个主表（mon）的数据，对应多个从表(children)的数据
-	- on_field
-	- related_quest_name
-
-- M:N
-
 - 主表：将主表的外键作为主键的表
 
 - 从表：建立外键的表
@@ -363,6 +352,41 @@ book.delete()
   - 如果必须删一个，留的是主表，删的是从表
   - 作为主键的是主表
 
+### 1:1 
+
+- 使用场景：复杂表拆解
+- Django中OneToOneField
+- on_field
+- 实现
+- 通过外键相似的OneToOneField实现，相当于ForeignKey中添加了unique=true
+- 对外键添加了唯一约束（本来外键是N:1） 
+
+### 1：N
+
+- 通过ForeignKey实现
+- 一个主表（mon）的数据，对应多个从表(children)的数据
+- on_field
+- related_quest_name设置setname
+- 主获取从：xx_set
+- 从获取主：显示属性
+
+### M:N
+
+- ManyToManyField
+- 通过多个Foreignkey实现，创建对应关系，且对应关系uniqe=True,即外键不能同时相等
+- 级联数据设置 从获取主与主获取从一样
+	- add
+	- remove
+	- clear
+	- set
+	- 即使错误的数据操作，添加重复数据，删除不存在数据，不会报错
+- 级联数据获取
+	- xx_set
+```
+good = Good.objects.xx
+customer = Customer.objects.xx
+customer.good_id.add(good)
+```
 ### 默认属性：
 
 #### CASCADE
@@ -466,10 +490,7 @@ TIME_ZONE ='Asia/Shanghai
 		admin.site.register(book.models.BookInfo)
 	4.修改admin中数据显示
 		重写BookInfo中的__str__
-## 多级路由
-- 二级路由内容和一级一样
-- 需要在一级路由注册二级路由
-    - path('re/', include('register.urls'))
+
 
 # admin.py
 
