@@ -24,7 +24,7 @@ SECRET_KEY = '0u)=v9ppbyvg1^g*@grj7jkd5a^^0iverke&^1q3rp#xf%ar8t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -66,11 +66,11 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 设置模板路径
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                os.path.join(BASE_DIR, 'students','templates'),
-                os.path.join(BASE_DIR, 'cookie','templates'),
-                os.path.join(BASE_DIR, 'sessionTest','templates'),
-                os.path.join(BASE_DIR, 'tokenTest','templates'),
-                os.path.join(BASE_DIR, 'Two','templates'),
+                 os.path.join(BASE_DIR, 'students', 'templates'),
+                 os.path.join(BASE_DIR, 'cookie', 'templates'),
+                 os.path.join(BASE_DIR, 'sessionTest', 'templates'),
+                 os.path.join(BASE_DIR, 'tokenTest', 'templates'),
+                 os.path.join(BASE_DIR, 'Two', 'templates'),
                  ]
         ,
         'APP_DIRS': True,
@@ -140,5 +140,5 @@ USE_TZ = True
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static"),
-                     ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),
+                    ]

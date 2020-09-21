@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Show</title>
+{% endblock %}
+
+{% block body %}
+{#    <url>#}
+{#        {% for item in showlist %}#}
+{#            <li>{{ item.id_num }}</li>#}
+{##}
+{#        {% endfor %}#}
+{##}
+{#    </url>#}
+        <url>
+        {% for item in showlist %}
+            <li>{{ item.p_name }}</li>
+
+        {% endfor %}
+
+    </url>
+{% endblock %}

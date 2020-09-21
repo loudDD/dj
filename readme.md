@@ -366,27 +366,48 @@ book.delete()
 - 通过ForeignKey实现
 - 一个主表（mon）的数据，对应多个从表(children)的数据
 - on_field
-- related_quest_name设置setname
+- related_name设置setname
 - 主获取从：xx_set
-- 从获取主：显示属性
+- 从获取主：显示属性 主表.外键名
 
 ### M:N
 
 - ManyToManyField
 - 通过多个Foreignkey实现，创建对应关系，且对应关系uniqe=True,即外键不能同时相等
 - 级联数据设置 从获取主与主获取从一样
-	- add
+	- add str （str）
 	- remove
 	- clear
 	- set
 	- 即使错误的数据操作，添加重复数据，删除不存在数据，不会报错
 - 级联数据获取
-	- xx_set
+	- 主获取从 从表名小写_set
 ```
-good = Good.objects.xx
-customer = Customer.objects.xx
-customer.good_id.add(good)
+person = Person.objects.last()
+idcards = person.idcard_set.all()
 ```
+	- 从获取主 主表.外键名
+```
+idcards = IDCard.objects.last()
+persons = idcards.id_person.all()
+```
+
+- 
+  - 从增加主  外键名.add
+```
+person = Person.objects.last()
+idcard = IDCard.objects.last()
+idcard.id_person.add(person)
+idcard.save()
+```
+  - 主增加从  主表_set.add
+```
+person = Person.objects.first()
+idcard = IDCard.objects.last()
+person.idcard_set.add(idcard)
+idcard.save()
+```
+
 ### 默认属性：
 
 #### CASCADE
@@ -410,9 +431,63 @@ customer.good_id.add(good)
 - 从获取主，显性属性，就是属性的名字
 - 其实只是有没有自动代码补充
 
+
+
+## 继承
+
+- 使用方法
+
+```
+class Animal(models.Model):
+    a_name = models.CharField(max_length=10)
+
+class dog(Animal):
+    d_leg = models.CharField(max_length=20)
+
+class cat(Animal):
+    d_eat = models.CharField(max_length=20)
+
+```
+
+- 效果
+  - Animal表正常
+  - dog表的主键建立外键到Animal上
+  - Animal的主键唯一，所以dog和cat的主键不是连续的
+- 参数 abstract=True/False
+  - 默认False，将通用字段（父类属性）放在父表中，特定字段放到子表中，中间使用外键连接
+  - True时，抽象化，不再数据库产生映射，只继承父类的属性（即通用字段）不会生成父类表，通用字段+特定字段生成子表
+
+```
+class Animal(models.Model):
+    a_name = models.CharField(max_length=10)
+    class Meta():
+    	abstract = True
+```
+
+## models -> sql
+
+以上
+
+## sql -> model
+
+- python manage.py inspectdb 显示数据库中的表，且models中没有
+- python manage.py inspectdb > app/models.py
+
+```
+class Book(models.Model):
+    b_name = models.CharField(max_length=16, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Book'
+```
+
+- managed = False 表示此表不被迁移系统管理
+
 ## ForeignKey
+
 - ForeignKey默认关联到主表的pk,但是on_field可以指定字段
-- 默认related_query_name = 字段_set
+- 默认related_name = 字段_set
 - 外键添加关联是，需要的是从表实例，而不是具体对应的字段
 
 ```
@@ -441,7 +516,7 @@ try:
 except BookInfo.DoesNotExists:
 	pass
 ```
-## 数据库
+## 引入数据库
 修改为mysql
 1.pip install PyMySQL
 2.django同名子目录的__init__.py中写入
@@ -478,7 +553,7 @@ STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将�
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICFILES_DIRS中的路径
 ### 一般静态文件放在根目录的static文件夹中
 ### 其他参数
-ALLOWED_HOSTS= ["*",] 所有可以访问到的ip都可以访问
+ALLOWED_HOSTS= ["*",] ,且runserver 0.0.0.0:xx所有可以访问到的ip都可以访问,
 LANGUAGE_CODE = ‘zh-Hans’
 TIME_ZONE ='Asia/Shanghai
 
