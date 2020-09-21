@@ -37,7 +37,7 @@ def add_idcard(request):
 #     idcard.id_person = person
 #     idcard.save()
 #     return HttpResponse('绑定成功')
-def bind_card(request): #m:n
+def bind_card(request):  # m:n
     person = TwoIdcardIdPerson.objects.first()
     idcard = TwoIdcard.objects.last()
     # idcard.id_person.add(person)
@@ -45,6 +45,7 @@ def bind_card(request): #m:n
     idcard.save()
 
     return HttpResponse('绑定成功')
+
 
 def removeperson(request):
     person = TwoIdcardIdPerson.objects.last()
@@ -74,7 +75,7 @@ def getallcard(request):
     # person = Person.objects.last()  从获取主
     # idcards = person.idcard_set.all()
 
-    idcards = TwoIdcard.objects.last() # 主获取从
+    idcards = TwoIdcard.objects.last()  # 主获取从
     persons = idcards.id_person.all()
     print(type(persons))
     for i in persons:
@@ -89,9 +90,23 @@ def addcat(request):
     Cat.save()
     return HttpResponse("cat create success {} ".format(Cat.id))
 
+
 def adddog(request):
     Dog = TwoDog()
     Dog.d_leg = "4"
     Dog.d_eat = "no"
     Dog.save()
     return HttpResponse("dog create success {}".format(Dog.id))
+
+
+def upload(request):
+    if request.method == 'GET':
+        return render(request, 'Two/upload.html')
+    elif request.method == 'POST':
+        file = request.FILES.get('suoluo')
+        print(file)
+        with open('D:\GitProjects\dj\Two\suluo.jpg', 'wb') as f:
+            for i in file.chunks():
+                f.write(i)
+                f.flush()
+        return HttpResponse('success upload')

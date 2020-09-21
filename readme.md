@@ -733,13 +733,79 @@ autoescapeoff 进行渲染
 ### form
 
 ```
-<form action ="" >
+<form action ="" method="" >
 	<input type='text' name = "">
 </form>
 ```
 - action 执行时，跳转的页面
 	- 跳转的页面可以获取数据，request.POST.get(input's name)	
 - method 请求方式
+
+#### 上传文件
+
+1. 文件需要分成多个包进行上传，需要进行特殊的编码
+
+```
+form表头添加 enctype='multipart/form-data'
+```
+
+2. html中添加上传标签,input的类型为file
+
+   ```html
+   <form action='' method='post' enctyppe='multipart/form-data'>
+   	<span>文件</span>
+       <<input type='file name='zoluo.jpg'>  {# 上传操作#}
+       <br>
+       <input typpe='submit' value='上传'> {# 提交#}
+   </form>
+   ```
+
+   
+
+   
+
+3. 文件储存在request.FILES属性中
+
+```
+views中获取文件
+file = request.FILES.get(input_file_tag_name)
+```
+
+4. 写入，除txt等文本文件，需要二进制写入
+
+```
+with open(newfilepath,'wb') as f:
+	for i in file.chunks(): #将文件变成块
+		f.write(i)
+		f.flush()
+```
+
+
+
+
+
+### static
+
+- 加载
+
+```
+{ % load static%} or {% staticfiles%}
+```
+
+- 使用
+
+```
+{% static 'relative_path'_to_static_dir%}
+```
+
+- 访问所有static文件
+
+```
+ip:port/static/filepath   127.0.0.1:8000/static/img/1.jpg
+```
+
+- 静态文件中的html不支持模板语言
+
 ## 结构标签
 
 ### 继承extends
