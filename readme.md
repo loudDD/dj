@@ -142,7 +142,21 @@ return HttpResponse(result)
 	gender_choice = ((0,'male'),(1,'fema'))
 	gender = models.SmallIntegerField(choices=gender_choice,default=0)
 	```
+
+#### ImageField
+
+- upload_to='relative path' 
+  - 路径不能以/开头	
+  - 不用传文件名
+  - 上传目的如有同名文件，自动重命名
+  - 可以传入strftime支持的字段来自动生成路径，如%Y
+- settings.py 中指定MEDIA_ROOT = []
+- settings.py中指定MEDIA_URL='/media/'
+- 数据库中会存放相对于MEDIA_ROOT的相对路径
+- ImageField的数据有url，path,delete等方法（img.objects.get().i_img.url）
+
 #### ForeignKey
+
 - models.ForeignKey(主表名，on_delete) 
 - 外键 on_delete = models.CASCADE
 ##### CASCADE 
@@ -236,10 +250,6 @@ class Students(models.Model):
        Students.objects.create(s_name="lily3",s_class=class2)
    
    ```
-
-   
-
-
 
 ## 查询数据
 
