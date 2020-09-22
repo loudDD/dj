@@ -10,6 +10,7 @@ from django.db import models
 
 class Book(models.Model):
     b_name = models.CharField(max_length=16, blank=True, null=True)
+    cc = models.SmallIntegerField
 
     class Meta:
         managed = False

@@ -107,46 +107,73 @@ return HttpResponse(result)
     
 
 # model: ORM
-## 数据类型
-	1.连接数据库，默认自带的sqlite
-	2.类 -- 表  属性 -- 字段
-	3.继承models.Model,字段格式一般为大写开头，Field结尾；内部要求 需了解
+1.连接数据库，默认自带的sqlite
+2.类 -- 表  属性 -- 字段
+3.继承models.Model,字段格式一般为大写开头，Field结尾；内部要求 需了解
 		3.1 主键id自动生成 
 		3.2 外键需添加外键对象
 		3.3 属性名就是字段名
 	```
-	class people(models.Model):
-		name = models.CharField(db_column='数据库列名')
-		
-	```
-	4. python manage.py makemigrations 创建关系 ，可在 migrations文件夹查看，进行操作等
-	5. python manage.py migrate 进行迁移，自动创建表完成
-	6. verbose_name admin后台显示的分栏名（也可直接在字段属性中添加改选项）	
-	7. models.CharFiled(max_length)必须有最大长度
-	8. 可选属性null=True，是否可为为空；unique=False;整形和布尔类型，default=xx；
-	9. 默认生成的表名：app名_model类名(小写) book_bookinfo
-	10.自定义表名，model文件中的表类中中创建内部类
-	```
-	class bookInfo:
-	
-		class Meta:
-			db_table= tablename
-			verbose_name = '' #修改admin后台显示的名字
-	
-	```
-	11. 枚举类型:理论上为有序字典；python字典为无序，所以使用二维元祖
+## 数据类型
+### 字段
+#### CharFiled
+- 字符串
+- max_length必须有最大长度
+#### IntegerField
+- 整型
+- default 必须有默认值
+#### BooleanField
+- 布尔值
+- default = True/False
+#### DateTimeField
+- auto_now 每次修改自动修改为当前时间
+- auto_now_add 设置为创建时的时间
+#### DateField
+- auto_now 每次修改自动修改为当前时间
+- auto_now_add 设置为创建时的时间
+- datetime.date实例
+```
+	    将str转换为datetiem datetime.strptime("2010-01-01" , "%Y-%m-%d")
+	    DateField.auto_now = false(默认)
+```
+#### SmallIntegerField
+- 枚举类型:理论上为有序字典；python字典为无序，所以使用二维元祖
 	```
 	gender_choice = ((0,'male'),(1,'fema'))
 	gender = models.SmallIntegerField(choices=gender_choice,default=0)
 	```
-	12.外键 ON_DELETE = models.CASCADE
-		1.CASCADE 删除主表的时候，从表数据也删掉;从表数据无法直接删除
-		2.PROTECT 无法删除主表字段时
-		3.SET_NULL 主表字段删除后，不影响从表，从表相关字段变为null
-	13. DateField 传入值格式为datetime
-	    将str转换为datetiem datetime.strptime("2010-01-01" , "%Y-%m-%d")
-	    DateField.auto_now = false(默认)
+#### ForeignKey
+- models.ForeignKey(主表名，on_delete) 
+- 外键 on_delete = models.CASCADE
+##### CASCADE 
+删除主表的时候，从表数据也删掉;从表数据无法直接删除
+##### PROTECT 
+主表有引用的时候，无法删除主表字段
+##### SET_NULL 
+主表字段删除后，不影响从表，从表相关字段变为null
+### 通用字段属性
+#### db_column 
+字段中定义数据库中表名
+#### verbose_name 
+admin后台显示的分栏名（也可直接在字段属性中添加改选项）	
+#### null=True
+是否可为为空；
+#### unique=False
+整形和布尔类型
+#### default
+默认值
+#### 表名
+- 默认生成的表名：app名_model类名(小写) book_bookinfo
+- 自定义表名
+model文件中的表类中中创建内部类
+```
+class bookInfo:
 
+class Meta:
+db_table= tablename
+verbose_name = '' #修改admin后台显示的名字
+
+```
 ## 处理使用数据
 	1. 在view中导入 from book.models import BookInfo
 	2.books = BookInfo.objects.all()
@@ -780,7 +807,7 @@ with open(newfilepath,'wb') as f:
 		f.flush()
 ```
 
-
+5. 可以配合数据库上传
 
 
 

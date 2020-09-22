@@ -46,6 +46,13 @@ def bind_card(request):  # m:n
 
     return HttpResponse('绑定成功')
 
+def up(request):
+    if request.method == 'POST':
+        file = request.FILES.get('')
+        with open("",'wb') as f:
+            for i in file.chunks():
+                f.write(i)
+                f.flush()
 
 def removeperson(request):
     person = TwoIdcardIdPerson.objects.last()
