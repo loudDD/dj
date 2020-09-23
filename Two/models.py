@@ -293,3 +293,8 @@ class VoteQuestion(models.Model):
     class Meta:
         managed = False
         db_table = 'vote_question'
+
+
+class testupload(models.Model):
+    t_name = models.CharField(max_length=10)
+    t_img = models.ImageField(upload_to='photo')

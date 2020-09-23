@@ -1,8 +1,10 @@
+import os
+
 from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from Two.models import TwoIdcardIdPerson, TwoIdcard, TwoCat, TwoDog
+from Two.models import TwoIdcardIdPerson, TwoIdcard, TwoCat, TwoDog, testupload
 
 
 def add_person(request):
@@ -46,13 +48,15 @@ def bind_card(request):  # m:n
 
     return HttpResponse('绑定成功')
 
+
 def up(request):
     if request.method == 'POST':
         file = request.FILES.get('')
-        with open("",'wb') as f:
+        with open("", 'wb') as f:
             for i in file.chunks():
                 f.write(i)
                 f.flush()
+
 
 def removeperson(request):
     person = TwoIdcardIdPerson.objects.last()
@@ -108,12 +112,24 @@ def adddog(request):
 
 def upload(request):
     if request.method == 'GET':
-        return render(request, 'Two/upload.html')
+        return render(request, 'upload.html')
     elif request.method == 'POST':
-        file = request.FILES.get('suoluo')
-        print(file)
-        with open('D:\GitProjects\dj\Two\suluo.jpg', 'wb') as f:
-            for i in file.chunks():
-                f.write(i)
-                f.flush()
-        return HttpResponse('success upload')
+        img = testupload()
+        img.t_name = request.POST.get('username')
+        print(request.FILES.get('icon'))
+        img.t_img = request.FILES.get('icon')
+        img.save()
+        # return HttpResponse('上传成功')
+        img = testupload.objects.first()
+        username = img.t_name
+        image = img.t_img.url
+        print("path", image)
+        print(type(img.t_img.url))
+        print(username)
+        print("url", img.t_img.url)
+        data = {
+            'username': username,
+            # 'image': image,
+            'image': image,
+        }
+        return render(request, 'Two/center.html', context=data)

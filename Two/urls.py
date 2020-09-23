@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 
 from Two import views
@@ -15,3 +17,4 @@ urlpatterns = [
     path('adddog/', views.adddog, name='adddog'),
     path('upload/',views.upload,name='upload')
 ]
+

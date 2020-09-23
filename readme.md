@@ -93,17 +93,22 @@ return HttpResponse(result)
 
 - context 字典，可传入参数到html，html使用参数 {{字典key}}
 
+  ## get
+
+  - request.method =='get'
+- request.GET.get('tag_property_name')
+  
   ## 扩展
-
+  
   ### python中反向解析
-
-  ```
-  from django.urls import reverse
+  
+	```
+	from django.urls import reverse
   
   render(reverse("appname:viewname"))
   ```
-	- 位置参数传参reverse('appname:viewname',args=(value1,))
-	- 关键字参数reverse('appname:viewname',kwargs={})
+  - 位置参数传参reverse('appname:viewname',args=(value1,))
+  - 关键字参数reverse('appname:viewname',kwargs={})
     
 
 # model: ORM
@@ -150,7 +155,7 @@ return HttpResponse(result)
   - 不用传文件名
   - 上传目的如有同名文件，自动重命名
   - 可以传入strftime支持的字段来自动生成路径，如%Y
-- settings.py 中指定MEDIA_ROOT = []
+- settings.py 中指定MEDIA_ROOT = ''
 - settings.py中指定MEDIA_URL='/media/'
 - 数据库中会存放相对于MEDIA_ROOT的相对路径
 - ImageField的数据有url，path,delete等方法（img.objects.get().i_img.url）
@@ -588,8 +593,32 @@ INSTALLED_APPS 中进行app的注册，可使用包名或包.apps.类名
 STATIC_URL ='/static/' 当访问路径为ip+port+STATIC_URL+filename django将访问静态文件,否则视为动态文件，根据路由进行匹配
 ### STATICFILES_DIRS
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICFILES_DIRS中的路径
-### 一般静态文件放在根目录的static文件夹中
-### 其他参数
+
+一般静态文件放在根目录的static文件夹中
+
+## media
+	### MEDIA_UTL
+
+- settings.py 中指定MEDIA_URL='/media/'
+
+- 字符串格式
+
+  ### MEDIA_ROOT 
+
+- settings.py中指定MEDIA_ROOT 
+
+- 字符串格式
+
+- 上传的路径是以MEDIA_ROOT/upload_to/
+### urls.py
+因为django服务器不服务media目录，所以需要额外在根路由添加
+```
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns = [ ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+## 其他参数
 ALLOWED_HOSTS= ["*",] ,且runserver 0.0.0.0:xx所有可以访问到的ip都可以访问,
 LANGUAGE_CODE = ‘zh-Hans’
 TIME_ZONE ='Asia/Shanghai
