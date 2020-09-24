@@ -1180,7 +1180,7 @@ question 作为Question的主键
 
 # 其他
 
-## 自行加密
+## 编码
 
 ### hashlib
 
@@ -1190,3 +1190,90 @@ hashlib.new('编码',"数据").hexdigect()
 
 ```
 
+## 缓存cache
+
+### 缓存类型
+
+- 使用数据库 django.core.cache.backends.db.DatabaseCache
+- 使用本地内存 django.core.cache.backends.locmem.LocMemCache
+- 使用文件系统 django.core.cache.backends.filebased.FileBasedCache
+- 使用memcached django.core.cache.backends.memcached.MemcachedCache
+- 使用redis
+- 等
+### 缓存功能
+
+使用缓存后，views直接查询缓存，如果没有，再通过models获取数据，如果有直接
+
+### 注册参数
+
+- BACKEND
+
+  - 缓存类型
+
+- LOCATION
+
+  - 缓存到的位置
+  - 不同缓存类型，location设置格式不同
+
+- OPTIONS
+  - MAX_ENTRIES 
+    - 最大缓存条数
+    - 默认300
+  - CULL_FREQUENCY
+    -  整数，
+    - 当达到最大缓存数，淘汰的比例，1:CULL_FREQUENCY ,如CULL_FREQUENCY=2，淘汰一半
+### 使用参数
+- timeout
+  - 必要参数 单位秒
+- cache
+  - 缓存配置
+  - 默认default
+- key_prefix
+### django数据库缓存
+
+- 创建缓存
+
+```
+python manage.py createcachetable table_name
+```
+
+- 注册缓存
+
+```
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'mycache_table',
+        'TIMEOUT': '60',
+        'OPTIONS': {
+            'MAX_ENTRIES': '300',
+        },
+        'KEY_PREFIX': "dj",
+        'VERSION': '1.0',
+    }
+```
+
+- 使用缓存
+
+```
+from django.views.decorators.cache import cache_page
+使用装饰器@cache_page
+```
+
+
+
+## 手动创建cache_page
+
+### django获取缓存
+
+```python
+#单个缓存
+from django.core.cache import cache
+#多个缓存
+from django.core.cache import caches
+cache = caches['']
+```
+
+
+
+  

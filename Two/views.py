@@ -1,9 +1,12 @@
 import os
 
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.views.decorators.cache import cache_page
+
 from Two.models import TwoIdcardIdPerson, TwoIdcard, TwoCat, TwoDog, testupload
 
 
@@ -133,3 +136,21 @@ def upload(request):
             'image': image,
         }
         return render(request, 'Two/center.html', context=data)
+
+
+@cache_page(timeout=30)
+def getupload(request):
+    uploaded_list = testupload.objects.all()
+    context = {'uploaded_list': uploaded_list}
+    return render(request, 'two/uploaded.html', context=context)
+
+
+def manualcache(request):
+    result = cache.get('cacheunqiuelocaotr')
+    if result:
+        return HttpResponse(result)
+    uploaded_list = testupload.objects.all()
+    context = {'uploaded_list': uploaded_list}
+    response =  render(request, 'two/uploaded.html', context=context)
+    cache.set('cacheunqiuelocaotr',response.content,timeout=30)
+    return response

@@ -126,9 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -145,3 +145,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),
                     ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'mycache_table',
+        'TIMEOUT': '60',
+        'OPTIONS': {
+            'MAX_ENTRIES': '300',
+        },
+        'KEY_PREFIX': "dj",
+        'VERSION': '1.0',
+    }
+}

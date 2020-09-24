@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        img{
+          height:100px;
+          width:200px;
+}
+    </style>
+</head>
+<body>
+
+<ul>
+    {% for item in uploaded_list %}
+        <li>
+        <span>{{ item.t_name }}</span>
+        <span><img src="{{ item.t_img.url }}" alt="{{ item.t_name }}"  ></span>
+        </li>
+    {% endfor %}
+
+
+</ul>
+</body>
+</html>
