@@ -156,5 +156,13 @@ CACHES = {
         },
         'KEY_PREFIX': "dj",
         'VERSION': '1.0',
+    },
+    'redis_cache': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://59.110.71.12:6379/1',  # 1是库名
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 单例,
+            'PASSWORD': '123456'
+        },
     }
 }

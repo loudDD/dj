@@ -138,7 +138,7 @@ def upload(request):
         return render(request, 'Two/center.html', context=data)
 
 
-@cache_page(timeout=30)
+@cache_page(timeout=30,cache='redis_cache')
 def getupload(request):
     uploaded_list = testupload.objects.all()
     context = {'uploaded_list': uploaded_list}

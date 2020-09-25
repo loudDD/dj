@@ -1310,10 +1310,11 @@ return res
 2. 数据库导入
 
    ```python
-   CACHE = {'BACKEN':'django_redis.cache.RedisCache',
+   'CACHE' : {'BACKEND':'django_redis.cache.RedisCache',
       'LOCATION':'redis://127.0.0.1:6379/1',#1是库名
       'OPTIONS':{
       'CLIENT_CLASS':'django_redis.client.DefaultClient'#单例,
+       'PASSWORD':"123456"
       },
            }
        
@@ -1327,7 +1328,7 @@ CACHE = {
 }
 ```
 
-#### 手动缓存
+### 手动缓存
 
 ```
 cache = caches['cache_db_name']
@@ -1335,3 +1336,16 @@ result = cache.get()
 cache.set()
 ```
 
+# 中间件
+
+- 轻量级，底层插件
+- 可接入Django请求和相应过程
+- 面向切面变成
+- 本质是一个python类，装饰器
+
+## 面向切面编程
+
+- Aspect Oriented Programming AOP
+- 实现针对业务处理过程中的切面进行提取
+- 面对的是处理过程中的某个步骤或者阶段
+- 以达到获取逻辑过程中各部分中间低耦合的隔离效果
