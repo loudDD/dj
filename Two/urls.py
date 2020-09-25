@@ -15,6 +15,8 @@ urlpatterns = [
     path('getallcard/', views.getallcard, name='getallcard'),
     path('addcat/', views.addcat, name='addcat'),
     path('adddog/', views.adddog, name='adddog'),
-    path('upload/',views.upload,name='upload')
+    path('upload/',views.upload,name='upload'),
+    path('uploads/',views.getupload,name='getupload'),
+    path('manualcache/',views.manualcache,name='manualcache'),
 ]
 
