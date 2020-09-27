@@ -596,6 +596,10 @@ STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICF
 
 一般静态文件放在根目录的static文件夹中
 
+## MIDDLEWARE
+
+导入中间件
+
 ## media
 	### MEDIA_UTL
 
@@ -1349,3 +1353,71 @@ cache.set()
 - 实现针对业务处理过程中的切面进行提取
 - 面对的是处理过程中的某个步骤或者阶段
 - 以达到获取逻辑过程中各部分中间低耦合的隔离效果
+
+## 作用
+
+当使用中间后，相关作用自动生效，如process_request完成后，所有请求会自动通过process\_request,可以通过ip统计地区人数等，进行
+
+- 数据分析
+- 数据过滤
+- 权重控制
+- 黑白名单
+- 优先级控制
+- 反爬
+
+## 中间件功能
+
+### process_request
+
+- 客户端请求通过process_request,主动或默认返回
+
+## 编写中间件
+
+- 新建包middleware,创建middleware.py
+
+- 中间件类继承MiddlewareMixin
+
+```python
+from django.utils.deprecation import MiddlewareMixin
+
+class hellomiddle(MiddlewareMixin):
+    
+```
+
+- settings.py注册新建的中间件
+
+```python
+MIDDLEWARE = [
+    'middleware.middleware.hellomiddle'
+]
+```
+
+- 编写process_request
+
+```python
+class hellomiddle(MiddlewareMixin):
+    def process_request(self,request):
+        ip = request.META.get('REMOTE_ADDR')
+        #白名单
+        if request.path =='two/getphone':
+			if request.META.get('REMOTE_ADDR') == '127.0.0.1':
+    	    	return HttpResponse('抢单成功')
+        #权重控制
+        	if ip.startswith('10'):
+                if random.randrange(100) >10:
+                    return HttpResponse('中奖')
+        #反爬
+        if request.path = 'two/getdata':
+            timeout = cache.get(ip)
+            if timeout:
+                return HttpResponse('10秒后再试')
+            cache.set(ip,ip,timeout=10)
+```
+
+## 问题
+
+1. 当process_request主动返回时，不同请求返回内容相同？
+
+request.path进行判断
+
+2. ‘two/getphone’是是什么？url路径？
