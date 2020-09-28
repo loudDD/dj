@@ -1111,18 +1111,26 @@ response.delete_cookie(key)
 ### csrf
 
 - django中用于跨站请求伪造保护
+
 - 防止恶意注册，确保客户端是自己的客户端
+
 - 使用cookie中的csrftoken进行验证，传输
-- 服务端发送给客户端，客户端将cookie获取过来，还要进行编码转换（数据安全）
-- 
+
+- 服务端发送给客户端，客户端将cookie获取过来，还要进行编码转换（数据安全)
+
+- 跳过csrf
+
+  - 添加标签
 
   ```
   {% csrf_token %}
   效果
-1.在请求头添加一个token
-2.页面加一个隐藏的input标签，内含token（从cookie获取）
+  1.在请求头添加一个token
+  2.页面加一个隐藏的input标签，内含token（从cookie获取）
   ```
-  
+
+  - 注释setting.py中middleware中csrf中间件
+  - views方法中添加装饰器@csrf_exempt 豁免csrf验证
 
 # 创建app全流程
 
@@ -1373,8 +1381,19 @@ cache.set()
 ### process_request
 
 - 客户端请求通过process_request,主动或默认返回
+- 参数 self,request
 
-## 编写中间件
+### process_exception
+
+- 捕获异常
+- 默认None，返回None时，继续由下个中间件的process_exception处理
+- 主动返回HttpResponse
+- 顺序按照setting.py中中间件顺序执行
+- 参数 self,request,exception
+
+## 中间件使用
+
+### 导入中间件
 
 - 新建包middleware,创建middleware.py
 
@@ -1395,7 +1414,21 @@ MIDDLEWARE = [
 ]
 ```
 
-- 编写process_request
+### 中间件编写
+
+#### 执行顺序
+
+request - > process_request ->process_view->view->process_template_response-> request_response
+
+process_exception全局
+
+#### process_request
+
+- 参数
+  - self
+  - request
+- 顺序 获取请求后，views之前
+- 中间件顺序 列表正序
 
 ```python
 class hellomiddle(MiddlewareMixin):
@@ -1417,7 +1450,7 @@ class hellomiddle(MiddlewareMixin):
             cache.set(ip,ip,timeout=10)
 ```
 
-### 单位时间内，数量控制器
+##### 单位时间内，数量控制器
 
 ```python
 count = cache.get(ip)
@@ -1434,6 +1467,61 @@ count = cache.get(ip)
             count.insert(0, time.time())
             # 覆写缓存，把当前最新的访问时间次数列表写入缓存
             cache.set(ip, count, timeout=60)
+```
+
+#### process_view
+
+- 视图函数前执行
+- 参数 
+  - self
+  - request
+  - view_func
+  - view_args
+  - view_kwargs
+- 如果process_request返回HttpResponse，则不执行process_view
+
+#### process_template_response
+
+- 顺序
+
+  > 视图函数执行后立刻执行
+
+- 前提
+
+  > 视图函数返回的对象有render方法（），或者返回的对象是TemplateResponse对象或等价方法
+
+- 参数
+  - self
+  - request
+  - response
+
+#### preocess_response
+
+- 执行完views.py后执行的函数
+- 中间件顺序 中间件列表反序
+- 参数
+  - self
+  - request
+  - response
+- 返回
+  - HttpResponse对象（顶替views中的返回）
+
+#### process_exception
+
+- 捕获所有异常
+
+- 参数
+
+  - self
+  - request
+  - exception
+
+- exception.__class__.__name__可以获取异常类型名字，进行详细处理
+
+```python
+    def process_exception(self, request, exception):
+        res = redirect(reverse('two:hello'))
+        return res
 ```
 
 

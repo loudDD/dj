@@ -158,3 +158,7 @@ def manualcache(request):
 
 def hello(request):
     return HttpResponse('hello')
+
+
+def error(request):
+    return HttpResponse(19/0)

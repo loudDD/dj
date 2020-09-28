@@ -4,6 +4,7 @@ from django.urls import path
 
 from Two import views
 
+app_name = 'two'
 urlpatterns = [
     path('addperson/', views.add_person, name='add_person'),
     path('addidcard/', views.add_idcard, name='add_idcard'),
@@ -15,9 +16,9 @@ urlpatterns = [
     path('getallcard/', views.getallcard, name='getallcard'),
     path('addcat/', views.addcat, name='addcat'),
     path('adddog/', views.adddog, name='adddog'),
-    path('upload/',views.upload,name='upload'),
-    path('uploads/',views.getupload,name='getupload'),
-    path('manualcache/',views.manualcache,name='manualcache'),
-    path('hello',views.hello,name='hello'),
+    path('upload/', views.upload, name='upload'),
+    path('uploads/', views.getupload, name='getupload'),
+    path('manualcache/', views.manualcache, name='manualcache'),
+    path('hello', views.hello, name='hello'),
+    path('error', views.error, name='error'),
 ]
-

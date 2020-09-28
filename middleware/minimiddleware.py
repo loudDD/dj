@@ -3,6 +3,8 @@ import time
 
 from django.core.cache import cache
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
 
 
@@ -39,4 +41,18 @@ class mymiddleware(MiddlewareMixin):
             # 覆写缓存，把当前最新的访问时间次数列表写入缓存
             # cache.set(ip, count, timeout=60)
             cache.set(ip, count)
+
+    def process_exception(self, request, exception):
+        print(type(exception))
+        print(dir(exception))
+        print(11111)
+        print(exception.__class__.__name__)
+        if exception.__class__.__name__ == 'ZeroDivisionError':
+            res = redirect(reverse('two:hello'))
+        return res
+
+    def process_view(self, request,view_func, view_args, view_kwargs):
+        if request.path == '/two/hello':
+            print("process_view")
+            # return HttpResponse("return process_view")
 
