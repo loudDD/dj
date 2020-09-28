@@ -18,5 +18,6 @@ urlpatterns = [
     path('upload/',views.upload,name='upload'),
     path('uploads/',views.getupload,name='getupload'),
     path('manualcache/',views.manualcache,name='manualcache'),
+    path('hello',views.hello,name='hello'),
 ]
 

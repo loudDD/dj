@@ -75,7 +75,7 @@ def removecard(request):
 
 def getcard(request):
     person_id = request.GET.get('id')
-    card = TwoIdcard.objects.get(id_person=person_id).id_num
+    card = TwoIdcard.objects.get(twoidcardidperson=person_id).id_num
     return HttpResponse("the card id {}".format(card))
 
 
@@ -154,3 +154,7 @@ def manualcache(request):
     response =  render(request, 'two/uploaded.html', context=context)
     cache.set('cacheunqiuelocaotr',response.content,timeout=30)
     return response
+
+
+def hello(request):
+    return HttpResponse('hello')

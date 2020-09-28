@@ -1281,6 +1281,8 @@ from django.views.decorators.cache import cache_page
 
 ### 获取缓存
 
+- cache.get(key,deafult)
+
 ```python
 #单个缓存
 from django.core.cache import cache
@@ -1364,6 +1366,7 @@ cache.set()
 - 黑白名单
 - 优先级控制
 - 反爬
+- 频率控制
 
 ## 中间件功能
 
@@ -1399,7 +1402,7 @@ class hellomiddle(MiddlewareMixin):
     def process_request(self,request):
         ip = request.META.get('REMOTE_ADDR')
         #白名单
-        if request.path =='two/getphone':
+        if request.path =='/two/getphone':
 			if request.META.get('REMOTE_ADDR') == '127.0.0.1':
     	    	return HttpResponse('抢单成功')
         #权重控制
@@ -1414,10 +1417,38 @@ class hellomiddle(MiddlewareMixin):
             cache.set(ip,ip,timeout=10)
 ```
 
+### 单位时间内，数量控制器
+
+```python
+count = cache.get(ip)
+            count = [] if count is None else count
+            print(count)
+            while count and time.time() - count[-1] > 60:
+                count.pop()
+                # 列表顺序为最新的时间index为0，所以最后一个元素距离现在超过60秒时，删除最后一个元素，遍历判断，直到每个元素距离现在都小于60秒
+            if count:
+                # 删除超过60秒的元素后，count数量仍大于3，说明60秒内访问次数超过3
+                if len(count) >= 3:
+                    return HttpResponse('60秒内访问过多，稍后再试')
+            # 不论上面判断，每次访问都会增加一个当前时间，即使已经返回 访问过多
+            count.insert(0, time.time())
+            # 覆写缓存，把当前最新的访问时间次数列表写入缓存
+            cache.set(ip, count, timeout=60)
+```
+
+
+
+## 注意
+
+- 缓存中数据无法修改，但是可以顶替
+- cache.get(key,default)当返回未None时，返回默认数据
+
 ## 问题
 
 1. 当process_request主动返回时，不同请求返回内容相同？
 
 request.path进行判断
 
-2. ‘two/getphone’是是什么？url路径？
+2. ‘/two/getphone’是是什么？url路径？
+
+> 除了域名意外的请求路径,'/'开头
