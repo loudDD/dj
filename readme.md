@@ -596,6 +596,10 @@ STATICFILES_DIRS=[os.path.join(BASE_DIR,'images'),] 静态文件路径为STATICF
 
 一般静态文件放在根目录的static文件夹中
 
+## MIDDLEWARE
+
+导入中间件
+
 ## media
 	### MEDIA_UTL
 
@@ -1107,18 +1111,26 @@ response.delete_cookie(key)
 ### csrf
 
 - django中用于跨站请求伪造保护
+
 - 防止恶意注册，确保客户端是自己的客户端
+
 - 使用cookie中的csrftoken进行验证，传输
-- 服务端发送给客户端，客户端将cookie获取过来，还要进行编码转换（数据安全）
-- 
+
+- 服务端发送给客户端，客户端将cookie获取过来，还要进行编码转换（数据安全)
+
+- 跳过csrf
+
+  - 添加标签
 
   ```
   {% csrf_token %}
   效果
-1.在请求头添加一个token
-2.页面加一个隐藏的input标签，内含token（从cookie获取）
+  1.在请求头添加一个token
+  2.页面加一个隐藏的input标签，内含token（从cookie获取）
   ```
-  
+
+  - 注释setting.py中middleware中csrf中间件
+  - views方法中添加装饰器@csrf_exempt 豁免csrf验证
 
 # 创建app全流程
 
@@ -1277,6 +1289,8 @@ from django.views.decorators.cache import cache_page
 
 ### 获取缓存
 
+- cache.get(key,deafult)
+
 ```python
 #单个缓存
 from django.core.cache import cache
@@ -1349,3 +1363,180 @@ cache.set()
 - 实现针对业务处理过程中的切面进行提取
 - 面对的是处理过程中的某个步骤或者阶段
 - 以达到获取逻辑过程中各部分中间低耦合的隔离效果
+
+## 作用
+
+当使用中间后，相关作用自动生效，如process_request完成后，所有请求会自动通过process\_request,可以通过ip统计地区人数等，进行
+
+- 数据分析
+- 数据过滤
+- 权重控制
+- 黑白名单
+- 优先级控制
+- 反爬
+- 频率控制
+
+## 中间件功能
+
+### process_request
+
+- 客户端请求通过process_request,主动或默认返回
+- 参数 self,request
+
+### process_exception
+
+- 捕获异常
+- 默认None，返回None时，继续由下个中间件的process_exception处理
+- 主动返回HttpResponse
+- 顺序按照setting.py中中间件顺序执行
+- 参数 self,request,exception
+
+## 中间件使用
+
+### 导入中间件
+
+- 新建包middleware,创建middleware.py
+
+- 中间件类继承MiddlewareMixin
+
+```python
+from django.utils.deprecation import MiddlewareMixin
+
+class hellomiddle(MiddlewareMixin):
+    
+```
+
+- settings.py注册新建的中间件
+
+```python
+MIDDLEWARE = [
+    'middleware.middleware.hellomiddle'
+]
+```
+
+### 中间件编写
+
+#### 执行顺序
+
+request - > process_request ->process_view->view->process_template_response-> request_response
+
+process_exception全局
+
+#### process_request
+
+- 参数
+  - self
+  - request
+- 顺序 获取请求后，views之前
+- 中间件顺序 列表正序
+
+```python
+class hellomiddle(MiddlewareMixin):
+    def process_request(self,request):
+        ip = request.META.get('REMOTE_ADDR')
+        #白名单
+        if request.path =='/two/getphone':
+			if request.META.get('REMOTE_ADDR') == '127.0.0.1':
+    	    	return HttpResponse('抢单成功')
+        #权重控制
+        	if ip.startswith('10'):
+                if random.randrange(100) >10:
+                    return HttpResponse('中奖')
+        #反爬
+        if request.path = 'two/getdata':
+            timeout = cache.get(ip)
+            if timeout:
+                return HttpResponse('10秒后再试')
+            cache.set(ip,ip,timeout=10)
+```
+
+##### 单位时间内，数量控制器
+
+```python
+count = cache.get(ip)
+            count = [] if count is None else count
+            print(count)
+            while count and time.time() - count[-1] > 60:
+                count.pop()
+                # 列表顺序为最新的时间index为0，所以最后一个元素距离现在超过60秒时，删除最后一个元素，遍历判断，直到每个元素距离现在都小于60秒
+            if count:
+                # 删除超过60秒的元素后，count数量仍大于3，说明60秒内访问次数超过3
+                if len(count) >= 3:
+                    return HttpResponse('60秒内访问过多，稍后再试')
+            # 不论上面判断，每次访问都会增加一个当前时间，即使已经返回 访问过多
+            count.insert(0, time.time())
+            # 覆写缓存，把当前最新的访问时间次数列表写入缓存
+            cache.set(ip, count, timeout=60)
+```
+
+#### process_view
+
+- 视图函数前执行
+- 参数 
+  - self
+  - request
+  - view_func
+  - view_args
+  - view_kwargs
+- 如果process_request返回HttpResponse，则不执行process_view
+
+#### process_template_response
+
+- 顺序
+
+  > 视图函数执行后立刻执行
+
+- 前提
+
+  > 视图函数返回的对象有render方法（），或者返回的对象是TemplateResponse对象或等价方法
+
+- 参数
+  - self
+  - request
+  - response
+
+#### preocess_response
+
+- 执行完views.py后执行的函数
+- 中间件顺序 中间件列表反序
+- 参数
+  - self
+  - request
+  - response
+- 返回
+  - HttpResponse对象（顶替views中的返回）
+
+#### process_exception
+
+- 捕获所有异常
+
+- 参数
+
+  - self
+  - request
+  - exception
+
+- exception.__class__.__name__可以获取异常类型名字，进行详细处理
+
+```python
+    def process_exception(self, request, exception):
+        res = redirect(reverse('two:hello'))
+        return res
+```
+
+
+
+## 注意
+
+- 缓存中数据无法修改，但是可以顶替
+- cache.get(key,default)当返回未None时，返回默认数据
+
+## 问题
+
+1. 当process_request主动返回时，不同请求返回内容相同？
+
+request.path进行判断
+
+2. ‘/two/getphone’是是什么？url路径？
+
+> 除了域名意外的请求路径,'/'开头
