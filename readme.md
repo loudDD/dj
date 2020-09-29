@@ -96,7 +96,7 @@ return HttpResponse(result)
   ## get
 
   - request.method =='get'
-- request.GET.get('tag_property_name')
+- request.GET.get('tag_property_name',defaultvalue_if_return_None)
   
   ## 扩展
   
@@ -722,6 +722,7 @@ for x,y in xx
 ```
 {% if %}
 {% elif %}
+{% else %}
 {% endif %}
 ```
 
@@ -742,11 +743,16 @@ for x,y in xx
 
   
 
-## 功能标签
-### a标签
+## 模板标签
+### url标签
 - {% url %}
 
-- 最好在同级路由器配置好path('book/', bookview.getdata, name='book'),
+- 最好在同级路由器配置好path('book/', bookview.getdata, name='book')
+
+- 传参
+
+    - 变量直接传递变量名，不需要{{}}
+    - 固定字符串，引号包括
 
 - html中使用：
     ```html
@@ -1349,6 +1355,23 @@ cache = caches['cache_db_name']
 result = cache.get()
 cache.set()
 ```
+
+## 分页器Paginator
+
+- 自动对传入数据进行分页
+- 参数
+  - object_list
+  - perpage int
+  - f
+  - allow_empty_first_page=True
+- 方法
+  - paginator.page(numberofpage)
+
+
+
+
+
+
 
 # 中间件
 

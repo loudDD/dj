@@ -18,6 +18,7 @@ urlpatterns = [
     path('adddog/', views.adddog, name='adddog'),
     path('upload/', views.upload, name='upload'),
     path('uploads/', views.getupload, name='getupload'),
+    path('uploadswithpage/<int:pageurl>', views.uploadswithpage, name='uploadswithpage'),
     path('manualcache/', views.manualcache, name='manualcache'),
     path('hello', views.hello, name='hello'),
     path('error', views.error, name='error'),

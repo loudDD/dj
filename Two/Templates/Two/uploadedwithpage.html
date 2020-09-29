@@ -13,15 +13,26 @@
 <body>
 
 <ul>
-    {% for item in uploaded_list %}
+    {% for item in pageobject %}
         <li>
         <span>{{ forloop.counter }}</span>
         <span>{{ item.t_name }}</span>
         <span><img src="{{ item.t_img.url }}" alt="{{ item.t_name }}"  ></span>
         </li>
+
     {% endfor %}
 
 
 </ul>
+<h1 href="">aaaaa</h1>
+{% if pageobject.has_previous %}
+    <a href={%  url 'two:uploadswithpage'   pageobject.previous_page_number  %}>{{ pageobject.previous_page_number }}</a>
+{% else %}
+    <span>首页</span>
+{% endif %}
+{% if pageobject.has_next %}
+        <a href={%  url 'two:uploadswithpage'   pageobject.next_page_number  %}>{{ pageobject.next_page_number }}</a>
+{% endif %}
+
 </body>
 </html>
