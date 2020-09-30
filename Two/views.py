@@ -1,6 +1,7 @@
 import os
 
 from django.core.cache import cache
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -138,9 +139,12 @@ def upload(request):
         return render(request, 'Two/center.html', context=data)
 
 
-@cache_page(timeout=30,cache='redis_cache')
+@cache_page(timeout=30, cache='redis_cache')
 def getupload(request):
-    uploaded_list = testupload.objects.all()
+    page = int(request.GET.get('page', 1))
+    per_page = int(request.GET.get('per_page', 10))
+
+    uploaded_list = testupload.objects.all()[per_page * (page - 1): per_page * page]
     context = {'uploaded_list': uploaded_list}
     return render(request, 'two/uploaded.html', context=context)
 
@@ -151,8 +155,8 @@ def manualcache(request):
         return HttpResponse(result)
     uploaded_list = testupload.objects.all()
     context = {'uploaded_list': uploaded_list}
-    response =  render(request, 'two/uploaded.html', context=context)
-    cache.set('cacheunqiuelocaotr',response.content,timeout=30)
+    response = render(request, 'two/uploaded.html', context=context)
+    cache.set('cacheunqiuelocaotr', response.content, timeout=30)
     return response
 
 
@@ -161,4 +165,20 @@ def hello(request):
 
 
 def error(request):
-    return HttpResponse(19/0)
+    return HttpResponse(19 / 0)
+
+
+def uploadswithpage(request,pageurl):
+    # page = int(request.GET.get('page', 1))
+    # per_page = int(request.GET.get('per_page', 10))
+    per_page = 10
+
+    uploaded_list = testupload.objects.all()
+
+    paginator = Paginator(uploaded_list, per_page=per_page)
+    pageobject = paginator.page(pageurl)
+
+    context = {
+        'pageobject': pageobject
+    }
+    return render(request, 'Two/uploadedwithpage.html', context=context)
