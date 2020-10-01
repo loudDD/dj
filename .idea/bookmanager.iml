@@ -18,6 +18,9 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bootstrap-vue" level="application" />
+    <orderEntry type="library" name="bootstrap-vue-icons.common" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
