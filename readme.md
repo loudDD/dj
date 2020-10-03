@@ -1423,15 +1423,32 @@ current_page = pageurl
 
 ```python
 mode = 'RGB'
-    size=[200,100]
-    color_bg = (255,0,0)
-    image = Image.new(mode=mode,size=size,color=color_bg)
-    imagedraw= ImageDraw(image,mode=mode)
-    imagedraw.text(xy=(0,0),text='Come On!')
+    size = [200, 100]
+    color_bg = getcolor()
+    image = Image.new(mode=mode, size=size, color=color_bg)
+    imagedraw = ImageDraw(image, mode=mode)
 
+    iamgefont = ImageFont.truetype(settings.FONT_PATH, 30)
+    verify_code = 'Come'
+    for i in range(len(verify_code)):
+        # file text填充色
+        fill = getcolor()
+        imagedraw.text(xy=(30 * i, 30), text=verify_code[i], font=iamgefont, fill=fill)
+    # 干扰点
+    for i in range(1000):
+        xy = (random.randrange(size[0]), random.randrange(size[1]))
+        fill = getcolor()
+        imagedraw.point(xy=xy, fill=fill)
+    # 画圆 xy区域，四元数组  start int end int 圆经过strat和end
+    start = random.randrange(size[0])
+    end = random.randrange(size[1])
+    fill = getcolor()
+    imagedraw.arc(xy=(0, 0, 200, 100), start=start, end=end, fill=fill)
+    for i in range(10):
+        imagedraw.line(xy=(random.randrange(size[0]), random.randrange(size[1]),(random.randrange(size[0]), random.randrange(size[1]))),fill=getcolor())
     fp = BytesIO()
 
-    image.save(fp,'png')
+    image.save(fp, 'png')
 
     return HttpResponse(fp.getvalue(), content_type='image/png')
 ```

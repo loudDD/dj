@@ -22,5 +22,6 @@ urlpatterns = [
     path('manualcache/', views.manualcache, name='manualcache'),
     path('hello', views.hello, name='hello'),
     path('error', views.error, name='error'),
-    path('getcode/',views.getcode, name='getcode')
+    path('getcode/',views.getcode, name='getcode'),
+    path('login/',views.login, name='login'),
 ]
