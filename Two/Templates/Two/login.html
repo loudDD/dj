@@ -5,12 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-
+<form action="" method="POST">
 <span><input type="text" name ='username' placeholder="pls enter username"></span>
 <br>
 <span> <input type="text" name="verify_code" placeholder="pls enter verify code"></span>
 <br>
 <span><img src="{% url 'two:getcode' %}" alt=""></span>
-
+<input type="submit" value="login">
+</form>
 </body>
 </html>

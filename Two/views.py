@@ -248,4 +248,11 @@ def login(request):
         return render(request,'two/login.html')
     elif request.method == 'POST':
         verify_code = cache.get('code')
-        enter_code = request.GET.get('verify_code')
+        print(verify_code)
+        print(123)
+        enter_code = request.POST.get('verify_code')
+        print(enter_code)
+        if verify_code.lower() == enter_code.lower() :
+            return HttpResponse('登陆成功')
+
+    return HttpResponse('登陆失败')
