@@ -933,6 +933,16 @@ ip:port/static/filepath   127.0.0.1:8000/static/img/1.jpg
 {% static 'ralative path'%}
 ```
 
+## html属性
+
+- disabled 不可点击
+
+  > class = 'disabled'
+
+- active
+
+  > class='active' 高亮
+
 # 请求
 
 - request.META
@@ -1359,14 +1369,89 @@ cache.set()
 ## 分页器Paginator
 
 - 自动对传入数据进行分页
+
 - 参数
   - object_list
   - perpage int
   - f
   - allow_empty_first_page=True
+  
 - 方法
-  - paginator.page(numberofpage)
 
+  - html中也可以使用
+
+  ```python
+  uploaded_list = testupload.objects.all()
+  paginator = Paginator(uploaded_list, per_page=per_page)pag = paginator.page(numberofpage)
+  paginator.page_range #所有页数list
+  paginator.num_pages
+  pagintor.count = len(pagintor) 数据个数,也就是uploaded_list的元素个数
+  page.has_next
+  page.next_page_number
+  page.object_list #paeg内的所有对象
+  
+  ```
+- 实例
+```python
+# 设置显示页码 当前页 +-2  只显示5页的页码
+current_page = pageurl
+    max_page = paginator.num_pages
+    print('current_page:' , current_page) #9
+    print('max_page:' , max_page) #9
+    if max_page >= 5:
+        if current_page + 2 < max_page and current_page - 2 > 0:
+            page_range = range(current_page - 2, current_page + 3)
+        elif current_page + 2 < max_page and current_page - 2 < 0:
+            page_range = range(1, 6)
+        elif current_page + 2 >= max_page:
+            page_range = range(current_page-4,max_page+1)
+    else:
+        page_range = range(1,max_page)
+```
+
+
+
+
+
+## pillow 
+
+- 验证码绘制
+  - image 画布
+  - imagedraw画笔
+  - imagefont画笔配置
+- 绘制
+
+```python
+mode = 'RGB'
+    size = [200, 100]
+    color_bg = getcolor()
+    image = Image.new(mode=mode, size=size, color=color_bg)
+    imagedraw = ImageDraw(image, mode=mode)
+
+    iamgefont = ImageFont.truetype(settings.FONT_PATH, 30)
+    verify_code = 'Come'
+    for i in range(len(verify_code)):
+        # file text填充色
+        fill = getcolor()
+        imagedraw.text(xy=(30 * i, 30), text=verify_code[i], font=iamgefont, fill=fill)
+    # 干扰点
+    for i in range(1000):
+        xy = (random.randrange(size[0]), random.randrange(size[1]))
+        fill = getcolor()
+        imagedraw.point(xy=xy, fill=fill)
+    # 画圆 xy区域，四元数组  start int end int 圆经过strat和end
+    start = random.randrange(size[0])
+    end = random.randrange(size[1])
+    fill = getcolor()
+    imagedraw.arc(xy=(0, 0, 200, 100), start=start, end=end, fill=fill)
+    for i in range(10):
+        imagedraw.line(xy=(random.randrange(size[0]), random.randrange(size[1]),(random.randrange(size[0]), random.randrange(size[1]))),fill=getcolor())
+    fp = BytesIO()
+
+    image.save(fp, 'png')
+
+    return HttpResponse(fp.getvalue(), content_type='image/png')
+```
 
 
 

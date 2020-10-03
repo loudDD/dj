@@ -167,3 +167,4 @@ CACHES = {
         },
     }
 }
+FONT_PATH = os.path.join(BASE_DIR,'static/font/msjh_boot.ttf')
