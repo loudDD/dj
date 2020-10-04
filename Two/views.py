@@ -13,25 +13,27 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.decorators.cache import cache_page
 
-from Two.models import TwoIdcardIdPerson, TwoIdcard, TwoCat, TwoDog, testupload
+# from Two.models import TwoIdcardIdPerson, TwoIdcard, TwoCat, TwoDog, testupload
+from Two.models import testupload
 from bookmanager import settings
 from utils.generate_verify_code import getcolor
 
 
-def add_person(request):
-    username = request.GET.get('username')
-    person = TwoIdcardIdPerson()
-    person.p_name = username
-    person.save()
-    return HttpResponse('person 添加成功 %d' % person.id)
-
-
-def add_idcard(request):
-    id_num = request.GET.get('id_num')
-    idcard = TwoIdcard()
-    idcard.id_num = id_num
-    idcard.save()
-    return HttpResponse('id card 添加成功%s' % idcard.id_num)
+#
+# def add_person(request):
+#     username = request.GET.get('username')
+#     person = TwoIdcardIdPerson()
+#     person.p_name = username
+#     person.save()
+#     return HttpResponse('person 添加成功 %d' % person.id)
+#
+#
+# def add_idcard(request):
+#     id_num = request.GET.get('id_num')
+#     idcard = TwoIdcard()
+#     idcard.id_num = id_num
+#     idcard.save()
+#     return HttpResponse('id card 添加成功%s' % idcard.id_num)
 
 
 # def bind_card(request): # 1:1
@@ -50,14 +52,14 @@ def add_idcard(request):
 #     idcard.id_person = person
 #     idcard.save()
 #     return HttpResponse('绑定成功')
-def bind_card(request):  # m:n
-    person = TwoIdcardIdPerson.objects.first()
-    idcard = TwoIdcard.objects.last()
-    # idcard.id_person.add(person)
-    person.idcard_set.add(idcard)
-    idcard.save()
-
-    return HttpResponse('绑定成功')
+# def bind_card(request):  # m:n
+#     person = TwoIdcardIdPerson.objects.first()
+#     idcard = TwoIdcard.objects.last()
+#     # idcard.id_person.add(person)
+#     person.idcard_set.add(idcard)
+#     idcard.save()
+#
+#     return HttpResponse('绑定成功')
 
 
 def up(request):
@@ -69,56 +71,56 @@ def up(request):
                 f.flush()
 
 
-def removeperson(request):
-    person = TwoIdcardIdPerson.objects.last()
-    person.delete()
-    return HttpResponse('移除 person成功')
+# def removeperson(request):
+#     person = TwoIdcardIdPerson.objects.last()
+#     person.delete()
+#     return HttpResponse('移除 person成功')
+#
+#
+# def removecard(request):
+#     idcard = TwoIdcard.objects.last()
+#     idcard.delete()
+#     return HttpResponse('删除id 成功')
+#
+#
+# def getcard(request):
+#     person_id = request.GET.get('id')
+#     card = TwoIdcard.objects.get(twoidcardidperson=person_id).id_num
+#     return HttpResponse("the card id {}".format(card))
+#
+#
+# def getperson(request):
+#     id_num = request.GET.get('id')
+#     person = TwoIdcardIdPerson.objects.get(pk=id_num).p_name
+#     return HttpResponse('the person is {}'.format(person))
 
 
-def removecard(request):
-    idcard = TwoIdcard.objects.last()
-    idcard.delete()
-    return HttpResponse('删除id 成功')
+# def getallcard(request):
+#     # person = Person.objects.last()  从获取主
+#     # idcards = person.idcard_set.all()
+#
+#     idcards = TwoIdcard.objects.last()  # 主获取从
+#     persons = idcards.id_person.all()
+#     # print(type(persons))
+#     # for i in persons:
+#     #     print(i)
+#     return render(request, 'show.html', context={'showlist': persons})
+
+#
+# def addcat(request):
+#     Cat = TwoCat()
+#     Cat.a_name = "catty1"
+#     Cat.d_eat = "ok"
+#     Cat.save()
+#     return HttpResponse("cat create success {} ".format(Cat.id))
 
 
-def getcard(request):
-    person_id = request.GET.get('id')
-    card = TwoIdcard.objects.get(twoidcardidperson=person_id).id_num
-    return HttpResponse("the card id {}".format(card))
-
-
-def getperson(request):
-    id_num = request.GET.get('id')
-    person = TwoIdcardIdPerson.objects.get(pk=id_num).p_name
-    return HttpResponse('the person is {}'.format(person))
-
-
-def getallcard(request):
-    # person = Person.objects.last()  从获取主
-    # idcards = person.idcard_set.all()
-
-    idcards = TwoIdcard.objects.last()  # 主获取从
-    persons = idcards.id_person.all()
-    # print(type(persons))
-    # for i in persons:
-    #     print(i)
-    return render(request, 'show.html', context={'showlist': persons})
-
-
-def addcat(request):
-    Cat = TwoCat()
-    Cat.a_name = "catty1"
-    Cat.d_eat = "ok"
-    Cat.save()
-    return HttpResponse("cat create success {} ".format(Cat.id))
-
-
-def adddog(request):
-    Dog = TwoDog()
-    Dog.d_leg = "4"
-    Dog.d_eat = "no"
-    Dog.save()
-    return HttpResponse("dog create success {}".format(Dog.id))
+# def adddog(request):
+#     Dog = TwoDog()
+#     Dog.d_leg = "4"
+#     Dog.d_eat = "no"
+#     Dog.save()
+#     return HttpResponse("dog create success {}".format(Dog.id))
 
 
 def upload(request):
@@ -234,25 +236,27 @@ def getcode(request):
     fill = getcolor()
     imagedraw.arc(xy=(0, 0, 200, 100), start=start, end=end, fill=fill)
     for i in range(10):
-        imagedraw.line(xy=(random.randrange(size[0]), random.randrange(size[1]),(random.randrange(size[0]), random.randrange(size[1]))),fill=getcolor())
+        imagedraw.line(xy=(
+        random.randrange(size[0]), random.randrange(size[1]), (random.randrange(size[0]), random.randrange(size[1]))),
+                       fill=getcolor())
     fp = BytesIO()
 
     image.save(fp, 'png')
-    cache.set('code',verify_code)
+    cache.set('code', verify_code)
 
     return HttpResponse(fp.getvalue(), content_type='image/png')
 
 
 def login(request):
     if request.method == 'GET':
-        return render(request,'two/login.html')
+        return render(request, 'two/login.html')
     elif request.method == 'POST':
         verify_code = cache.get('code')
         print(verify_code)
         print(123)
         enter_code = request.POST.get('verify_code')
         print(enter_code)
-        if verify_code.lower() == enter_code.lower() :
+        if verify_code.lower() == enter_code.lower():
             return HttpResponse('登陆成功')
 
     return HttpResponse('登陆失败')
