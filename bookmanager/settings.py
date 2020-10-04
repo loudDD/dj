@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'pay.apps.PayConfig',
     "register.apps.RegisterConfig",
     'vote.apps.VoteConfig',
+    'tinymce',
     'students',
     'cookie',
     'sessionTest',
@@ -167,4 +168,10 @@ CACHES = {
         },
     }
 }
-FONT_PATH = os.path.join(BASE_DIR,'static/font/msjh_boot.ttf')
+FONT_PATH = os.path.join(BASE_DIR, 'static/font/msjh_boot.ttf')
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 800,
+    'height': 600,
+}
